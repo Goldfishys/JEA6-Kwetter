@@ -1,5 +1,7 @@
 package models;
 
+import DAL.Database;
+
 import java.util.ArrayList;
 
 public class Group {
@@ -20,6 +22,16 @@ public class Group {
     }
 
     public void AddAccount(Account account) {
-        accounts.add(account);
+        if(!accounts.contains(account)) {
+            accounts.add(account);
+            Database.getInstance().groupRepo.JoinGroup(account, this);
+        }
+    }
+
+    public void RemoveAccount(Account account) {
+        if(accounts.contains(account)) {
+            accounts.remove(account);
+            Database.getInstance().groupRepo.LeaveGroup(account, this);
+        }
     }
 }

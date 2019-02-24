@@ -1,39 +1,27 @@
 package DAL.Implementations.Mock;
 
+import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
-import models.Group;
-
-import java.util.ArrayList;
+import models.User;
 
 public class AccountRepoMock implements IAccount {
-    public ArrayList<Group> groups;
+    private Database database;
 
-    public AccountRepoMock() {
-        groups = new ArrayList<>();
+    public AccountRepoMock(Database database) {
+        this.database = database;
     }
 
     @Override
-    public void JoinGroup(Account account, Group group) {
-        if(!group.accounts.contains(account)){
-            group.AddAccount(account);
-        }
-    }
+    public Account Register(String username) {
+        Account acc = new Account(database.accounts.size());
+        User usr = new User(username, acc);
+        acc.setUser(usr);
+        database.accounts.add(acc);
 
-    @Override
-    public void LeaveGroup(Account account, Group group) {
-
-    }
-
-    @Override
-    public void CreateGroup(Group group){
-        if(!groups.contains(group)){
-            groups.add(group);
-        }
-    }
-
-    @Override
-    public void RemoveGroup(Group group) {
-
+        Account acc2 = new Account(acc.getID());
+        User usr2 = new User(username, acc2);
+        acc2.setUser(usr2);
+        return acc2;
     }
 }

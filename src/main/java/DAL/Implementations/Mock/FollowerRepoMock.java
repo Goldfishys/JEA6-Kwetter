@@ -1,4 +1,9 @@
 package DAL.Implementations.Mock;
 
-public class FollowerRepoMock {
+import DAL.Database;
+import DAL.Interfaces.IFollower;
+
+public class FollowerRepoMock implements IFollower {
+    public FollowerRepoMock(Database database) {
+    }
 }
