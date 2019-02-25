@@ -24,4 +24,13 @@ public class AccountRepoMock implements IAccount {
         acc2.setUser(usr2);
         return acc2;
     }
+
+    public Account GetAccountByID(int ID){
+        for(Account acc : database.accounts){
+            if(acc.getID() == ID){
+                return acc;
+            }
+        }
+        return null;
+    }
 }

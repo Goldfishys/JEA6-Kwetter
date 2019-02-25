@@ -9,4 +9,6 @@ public interface IKweet {
     ArrayList<Kweet> SearchMentions(String searchTerm);
     void PostKweet(int accountID, Kweet kweet);
     ArrayList<Kweet> GetKweetsForAccount(int accountID);
+
+    void RemoveKweet(Kweet kweet);
 }

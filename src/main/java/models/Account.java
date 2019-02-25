@@ -2,9 +2,12 @@ package models;
 
 import DAL.Database;
 
+import java.util.ArrayList;
+
 public class Account {
-    public int ID;
-    public User user;
+    private int ID;
+    private User user;
+    private ArrayList<Permission> permissions;
 
     //region get/set
     public int getID() {
@@ -22,16 +25,21 @@ public class Account {
     public void setUser(User user) {
         this.user = user;
     }
+    public ArrayList<Permission> getPermissions() {
+        return permissions;
+    }
     //endregion
 
     //region constructors
     public Account(int ID){
         this.ID = ID;
+        permissions = new ArrayList<>();
     }
 
     public Account(int ID, User user) {
         this.ID = ID;
         this.user = user;
+        permissions = new ArrayList<>();
     }
     //endregion
 
@@ -46,6 +54,10 @@ public class Account {
 
     public void LoadUser() {
         user = Database.getInstance().userRepo.LoadUser(this.ID);
+    }
+
+    public void LoadGroups(){
+        permissions = Database.getInstance().groupRepo.GetPermissionsForAccount(this.ID);
     }
     //endregion
 }

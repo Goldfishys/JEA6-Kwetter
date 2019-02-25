@@ -1,5 +1,7 @@
 package models;
 
+import DAL.Database;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,11 +71,17 @@ public class Kweet {
         this.author = author;
         this.date = date;
 
-        if (activity != null) { this.activity = activity; }
-        else { this.activity = new ArrayList<>(); }
+        if (activity != null) {
+            this.activity = activity;
+        } else {
+            this.activity = new ArrayList<>();
+        }
 
-        if (mentions != null) { this.mentions = mentions; }
-        else { this.mentions = new ArrayList<>(); }
+        if (mentions != null) {
+            this.mentions = mentions;
+        } else {
+            this.mentions = new ArrayList<>();
+        }
     }
 
     public Kweet(String text, User author, Date date, List<Activity> activity, ArrayList<User> mentions) {
@@ -81,11 +89,17 @@ public class Kweet {
         this.author = author;
         this.date = date;
 
-        if (activity != null) { this.activity = activity; }
-        else { this.activity = new ArrayList<>(); }
+        if (activity != null) {
+            this.activity = activity;
+        } else {
+            this.activity = new ArrayList<>();
+        }
 
-        if (mentions != null) { this.mentions = mentions; }
-        else { this.mentions = new ArrayList<>(); }
+        if (mentions != null) {
+            this.mentions = mentions;
+        } else {
+            this.mentions = new ArrayList<>();
+        }
     }
     //endregion
 
@@ -97,5 +111,28 @@ public class Kweet {
         }
         return false;
     }
+
+    public void DeleteKweet(int deleterAccountID) {
+        if (this.getAuthor().getAccount().getID() == deleterAccountID) {
+            Database.getInstance().kweetRepo.RemoveKweet(this);
+        } else {
+            if (Database.getInstance().groupRepo.HasPermission(deleterAccountID, Permission.DeleteAllKweets)) {
+                Database.getInstance().kweetRepo.RemoveKweet(this);
+            }
+        }
+    }
     //endregion
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() == Kweet.class) {
+            Kweet kwt2 = (Kweet) obj;
+            if (this.getAuthor().getAccount().getID() == kwt2.getAuthor().getAccount().getID() &&
+                    this.getDate() == kwt2.getDate() &&
+                    this.getText() == kwt2.getText()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

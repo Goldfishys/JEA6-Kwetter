@@ -82,7 +82,6 @@ public class User {
     //region KweetMethods
     public void PostKweet(String text) {
         if (text != null && text.length() <= 140) {
-            System.out.println(new Date());
             Kweet kweet = new Kweet(text, this, new Date(), null, null);
             Database.getInstance().kweetRepo.PostKweet(account.getID(), kweet);
             kweets.add(kweet);
@@ -91,8 +90,22 @@ public class User {
 
     public ArrayList<Kweet> GetRecentKweets() {
         ArrayList<Kweet> kweets = Database.getInstance().kweetRepo.GetKweetsForAccount(account.getID());
+        return SortKweetsNewFirst(kweets).stream().limit(10).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public ArrayList<Kweet> GetTimeLine(){
+        ArrayList<Kweet> kweets = new ArrayList<>();
+        kweets.addAll(this.GetRecentKweets());
+
+        for(Account follow : following){
+            kweets.addAll(follow.getUser().GetRecentKweets());
+        }
+        return SortKweetsNewFirst(kweets);
+    }
+
+    public ArrayList<Kweet> SortKweetsNewFirst(ArrayList<Kweet> kweets){
         kweets.sort(Comparator.comparing(o -> o.getDate(), Collections.reverseOrder()));
-        return kweets.stream().limit(10).collect(Collectors.toCollection(ArrayList::new));
+        return kweets;
     }
     //endregion
 

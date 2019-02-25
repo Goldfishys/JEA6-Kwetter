@@ -6,6 +6,7 @@ import models.Account;
 import models.Kweet;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class KweetRepoMock implements IKweet {
     public Database database;
@@ -57,6 +58,17 @@ public class KweetRepoMock implements IKweet {
             }
         }
         return results;
+    }
+
+    @Override
+    public void RemoveKweet(Kweet kweet) {
+        for (Iterator<Account> accIT = database.accounts.iterator(); accIT.hasNext(); ) {
+            Account acc = accIT.next();
+            for (Iterator<Kweet> kweetIT = acc.getUser().getKweets().iterator(); kweetIT.hasNext(); ) {
+                Kweet kwt = kweetIT.next();
+                if(kwt.equals(kweet)) kweetIT.remove();
+            }
+        }
     }
 
 

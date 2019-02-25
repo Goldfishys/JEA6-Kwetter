@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class UserTest {
     Account acc1;
     Account acc2;
+    KwetterService ks;
 
     @Deployment
     public static JavaArchive createDeployment() {
@@ -26,7 +27,8 @@ public class UserTest {
 
     @Before
     public void setUp() throws Exception {
-        acc1 = new KwetterService().Register("Henkie");
+        ks = new KwetterService();
+        acc1 = ks.Register("Henkie");
     }
 
     @Test
@@ -102,8 +104,8 @@ public class UserTest {
     }
 
     @Test
-    public void FollowerTest(){
-        acc2 = new KwetterService().Register("Gitaar");
+    public void followerTest(){
+        acc2 = ks.Register("Guitar");
 
         //test adding follower
         acc1.getUser().AddFollower(acc2);
@@ -116,5 +118,33 @@ public class UserTest {
         acc1.getUser().RemoveFollower(acc2);
         Assert.assertEquals(0,acc1.getUser().getFollowers().size());
         Assert.assertEquals(0,acc2.getUser().getFollowing().size());
+    }
+
+    @Test
+    public void timeLineTest(){
+        ArrayList<Account> following = new ArrayList<>();
+
+        //create users
+        following.add(ks.Register("Drums"));
+        following.add(ks.Register("Flute"));
+        following.add(ks.Register("Piano"));
+        following.add(ks.Register("Keyboard"));
+        acc1 = ks.Register("MusicPlayer");
+
+        Assert.assertEquals(0, acc1.getUser().GetTimeLine().size());
+
+        //add acc1 as follower of all users & post 2 kweets for each acc
+        for(Account account : following){
+            User usr = account.getUser();
+            usr.AddFollower(acc1);
+            usr.PostKweet("Hi i am " + usr.getUsername());
+            usr.PostKweet("I Like Music!");
+        }
+
+        acc1.getUser().PostKweet("Chellowwww");
+        acc1.getUser().PostKweet("Chellowwww");
+
+        //pull timeline for acc1, check if it has 10 kweets
+        Assert.assertEquals(10, acc1.getUser().GetTimeLine().size());
     }
 }
