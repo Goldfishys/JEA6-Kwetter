@@ -2,11 +2,25 @@ package models;
 
 import DAL.Database;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 
+
+@Entity
+@Table(name = "Account", schema = "IEZ6hf4RcZ")
 public class Account {
+    @Id
+    @GeneratedValue
+    @Column(name = "IDaccount", updatable = false, nullable = false)
     private int ID;
+
+    @Column(name = "Password")
+    private String password;
+
+    @JoinColumn(name = "IDuser")
     private User user;
+
+    @Transient
     private ArrayList<Permission> permissions;
 
     //region get/set
@@ -25,12 +39,30 @@ public class Account {
     public void setUser(User user) {
         this.user = user;
     }
+
     public ArrayList<Permission> getPermissions() {
         return permissions;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     //endregion
 
     //region constructors
+    public Account() {
+    }
+
+    public Account(String name, String password){
+        this.user = new User(name, this);
+        this.password = password;
+    }
+
     public Account(int ID){
         this.ID = ID;
         permissions = new ArrayList<>();

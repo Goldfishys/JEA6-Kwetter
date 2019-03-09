@@ -35,9 +35,9 @@ public class KweetTest {
     public void setUp() throws Exception {
         //create kwetterservice and accounts
         ks = new KwetterService();
-        acc1 = ks.Register("Henkie");
-        acc2 = ks.Register("Paulie");
-        acc3 = ks.Register("MOD");
+        acc1 = ks.Register("Henkie", "trick");
+        acc2 = ks.Register("Paulie", "trick");
+        acc3 = ks.Register("MOD", "trick");
 
         //set permissions for accounts
 

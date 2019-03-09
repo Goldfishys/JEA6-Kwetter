@@ -2,18 +2,34 @@ package models;
 
 import DAL.Database;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+@Entity
+@Table(name = "User", schema = "IEZ6hf4RcZ")
 public class User {
+    @Id
+    @GeneratedValue
+    @Column(name = "IDuser")
+    private int id;
+
+    @Transient
     private Account account;
+
+    @Column(name = "Username")
     private String username;
+
+    @Transient
     private ArrayList<Kweet> kweets;
+    @Transient
     private ArrayList<Account> followers;
+    @Transient
     private ArrayList<Account> following;
+    @Transient
     private Profile profile;
 
     //region get/set
@@ -67,6 +83,9 @@ public class User {
     //endregion
 
     //region Constructors
+    public User() {
+    }
+
     public User(String username, Account account) {
         this.account = account;
         this.username = username;

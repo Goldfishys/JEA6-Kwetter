@@ -28,8 +28,8 @@ public class AccountTest {
     @Before
     public void setUp() throws Exception {
         ks = new KwetterService();
-        acc1 = ks.Register("Ben");
-        acc2 = ks.Register("Olaf");
+        acc1 = ks.Register("Ben", "trick");
+        acc2 = ks.Register("Olaf", "trick");
         adminGroup = new Group("AdminGroup",new Role());
         userGroup = new Group("UserGroup",new Role());
     }

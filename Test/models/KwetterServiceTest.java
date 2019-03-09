@@ -4,7 +4,6 @@ import DAL.Database;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,9 +34,9 @@ public class KwetterServiceTest {
     @Test
     public void register() {
         Assert.assertEquals(0, database.accounts.size());
-        ks.Register("Bennie");
+        ks.Register("Bennie", "trick");
         Assert.assertEquals(1, database.accounts.size());
-        ks.Register("Bennie");
+        ks.Register("Bennie", "trick");
         Assert.assertEquals(2, database.accounts.size());
 
         Assert.assertNotEquals(database.accounts.get(0), database.accounts.get(1));
@@ -45,8 +44,8 @@ public class KwetterServiceTest {
 
     @Test
     public void searchKweets() {
-        acc1 = ks.Register("Dirk");
-        acc2 = ks.Register("Henk");
+        acc1 = ks.Register("Dirk", "trick");
+        acc2 = ks.Register("Henk", "trick");
 
         acc1.getUser().PostKweet("Hallo @Henk !");
         acc2.getUser().PostKweet("Hallo, welcome @Dirk !");

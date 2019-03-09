@@ -28,7 +28,7 @@ public class UserTest {
     @Before
     public void setUp() throws Exception {
         ks = new KwetterService();
-        acc1 = ks.Register("Henkie");
+        acc1 = ks.Register("Henkie", "trick");
     }
 
     @Test
@@ -105,7 +105,7 @@ public class UserTest {
 
     @Test
     public void followerTest(){
-        acc2 = ks.Register("Guitar");
+        acc2 = ks.Register("Guitar", "trick");
 
         //test adding follower
         acc1.getUser().AddFollower(acc2);
@@ -125,11 +125,11 @@ public class UserTest {
         ArrayList<Account> following = new ArrayList<>();
 
         //create users
-        following.add(ks.Register("Drums"));
-        following.add(ks.Register("Flute"));
-        following.add(ks.Register("Piano"));
-        following.add(ks.Register("Keyboard"));
-        acc1 = ks.Register("MusicPlayer");
+        following.add(ks.Register("Drums", "trick"));
+        following.add(ks.Register("Flute", "trick"));
+        following.add(ks.Register("Piano", "trick"));
+        following.add(ks.Register("Keyboard", "trick"));
+        acc1 = ks.Register("MusicPlayer", "trick");
 
         Assert.assertEquals(0, acc1.getUser().GetTimeLine().size());
 

@@ -3,6 +3,6 @@ package DAL.Interfaces;
 import models.Account;
 
 public interface IAccount {
-    Account Register(String username);
+    void Register(Account account);
     Account GetAccountByID(int ID);
 }

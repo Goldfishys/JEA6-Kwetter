@@ -23,8 +23,10 @@ public class KwetterService {
         return new ArrayList<>();
     }
 
-    public Account Register(String username) {
-        return Database.getInstance().accountRepo.Register(username);
+    public Account Register(String username, String password) {
+        Account account =  new Account(username, password);
+        Database.getInstance().accountRepo.Register(account);
+        return account;
     }
     //endregion
 }
