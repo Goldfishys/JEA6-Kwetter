@@ -17,7 +17,7 @@ public class Account {
     @Column(name = "Password")
     private String password;
 
-    @JoinColumn(name = "IDuser")
+    @Transient
     private User user;
 
     @Transient

@@ -8,8 +8,7 @@ import javax.ws.rs.Produces;
 public class HomeController {
 
     @GET
-    @Path("/TimeLine")
-    @Produces("application/json")
+    @Produces("text/plain")
     public String getClichedMessage() {
         return "Kweet Kweet!";
     }

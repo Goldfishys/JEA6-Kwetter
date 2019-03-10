@@ -10,6 +10,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
+import javax.persistence.spi.PersistenceProvider;
+import javax.persistence.spi.PersistenceProviderResolver;
+import javax.persistence.spi.PersistenceProviderResolverHolder;
+import java.util.List;
+import java.util.Properties;
+
 @RunWith(Arquillian.class)
 public class KwetterServiceTest {
     Database database;
@@ -22,13 +32,39 @@ public class KwetterServiceTest {
         return ShrinkWrap.create(JavaArchive.class)
                 .addAsDirectory("src/main/java")
                 .addPackages(true,"DAL")
-                .addPackages(true,"models");
+                .addPackages(true,"models")
+                .addAsResource("META-INF/persistence.xml");
     }
 
     @Before
     public void setUp() throws Exception {
-        database = Database.getInstance();
-        ks = new KwetterService();
+        //database = Database.getInstance();
+        //ks = new KwetterService();
+    }
+
+    @Test
+    public void EMTest() throws Exception {
+        String persistenceUnitName = "Hibernate-Persistence";
+
+        EntityManagerFactory emf = null;
+        PersistenceProviderResolver resolver = PersistenceProviderResolverHolder.getPersistenceProviderResolver();
+        System.out.println("resolver : " + resolver);
+
+        List<PersistenceProvider> providers = resolver.getPersistenceProviders();
+        System.out.println("providers : " + providers.size());
+
+        for (PersistenceProvider provider : providers) {
+            //throw new Exception("provider name: " + provider);
+            System.out.println("provider name: " + provider);
+            //throw new Exception(""+provider.createEntityManagerFactory(persistenceUnitName, null));
+            emf = provider.createEntityManagerFactory(persistenceUnitName, null);
+            if (emf != null) {
+                break;
+            }
+        }
+        if (emf == null) {
+            throw new PersistenceException("No Persistence provider for EntityManager named " + persistenceUnitName);
+        }
     }
 
     @Test

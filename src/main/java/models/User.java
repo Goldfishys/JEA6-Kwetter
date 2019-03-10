@@ -17,7 +17,8 @@ public class User {
     @Column(name = "IDuser")
     private int id;
 
-    @Transient
+    @OneToOne
+    @JoinColumn(name = "IDaccount")
     private Account account;
 
     @Column(name = "Username")
