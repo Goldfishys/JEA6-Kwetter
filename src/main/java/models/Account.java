@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 @Entity
-@Table(name = "Account", schema = "IEZ6hf4RcZ")
+@Table(name = "Account")
 public class Account {
     @Id
     @GeneratedValue
