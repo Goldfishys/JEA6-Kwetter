@@ -12,7 +12,7 @@ public class AccountRepo implements IAccount {
     EntityManagerFactory emfac;
 
     public AccountRepo(){
-        emfac = Persistence.createEntityManagerFactory("Hibernate-Persistence");
+        emfac = Persistence.createEntityManagerFactory("KwetterHibernatePersistence");
     }
 
     @Override

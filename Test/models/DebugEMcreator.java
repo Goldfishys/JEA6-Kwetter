@@ -13,7 +13,7 @@ public class DebugEMcreator {
 
     @Test
     public void EMTest(){
-        String persistenceUnitName = "Hibernate-Persistence";
+        String persistenceUnitName = "KwetterHibernatePersistence";
 
         EntityManagerFactory emf = null;
         PersistenceProviderResolver resolver = PersistenceProviderResolverHolder.getPersistenceProviderResolver();
