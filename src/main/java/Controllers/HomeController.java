@@ -1,5 +1,7 @@
 package Controllers;
 
+import models.Profile;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -12,4 +14,6 @@ public class HomeController {
     public String getClichedMessage() {
         return "Kweet Kweet!";
     }
+
+
 }
