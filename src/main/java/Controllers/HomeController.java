@@ -27,6 +27,7 @@ public class HomeController {
     @Produces("application/json")
     public ArrayList<Kweet> search(@PathParam("SearchTerm") String SearchTerm){
         System.out.println(SearchTerm);
+        
         return ks.SearchKweets(SearchTerm, false);
     }
 
