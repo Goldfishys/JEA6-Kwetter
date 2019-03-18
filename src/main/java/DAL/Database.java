@@ -1,6 +1,7 @@
 package DAL;
 
 import DAL.Implementations.Database.AccountRepo;
+import DAL.Implementations.Database.KweetRepo;
 import DAL.Implementations.Mock.*;
 import DAL.Interfaces.*;
 import models.Account;
@@ -21,7 +22,7 @@ public class Database {
         accountRepo = new AccountRepo();
         followerRepo = new FollowerRepoMock(this);
         groupRepo = new GroupRepoMock(this);
-        kweetRepo = new KweetRepoMock(this);
+        kweetRepo = new KweetRepo();
         profileRepo = new ProfileRepoMock(this);
         userRepo = new UserRepoMock(this);
         accounts = new ArrayList<>();

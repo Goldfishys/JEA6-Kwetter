@@ -1,18 +1,37 @@
 package models;
 
-import DAL.Database;
-
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class Kweet {
+@Entity
+@Table(name = "Kweet")
+public class Kweet implements Comparable<Kweet>{
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "IDkweet")
     private int ID;
+
+    @Column(name = "KweetText")
     private String text;
-    private User author;
+
+    @Column(name = "Kweet_IDaccount")
+    private int author;
+
+    @Column
+    private LocalDateTime created;
+
+    @Transient
     private List<Activity> activity;
+    @Transient
     private ArrayList<User> mentions;
-    private Date date;
+
+    @PrePersist
+    protected void onCreate() {
+        setCreated(LocalDateTime.now());
+    }
 
     //region get/set
     public int getID() {
@@ -31,11 +50,11 @@ public class Kweet {
         this.text = text;
     }
 
-    public User getAuthor() {
+    public int getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(int author) {
         this.author = author;
     }
 
@@ -55,21 +74,41 @@ public class Kweet {
         this.mentions = mentions;
     }
 
-    public Date getDate() {
-        return date;
+    public LocalDateTime getCreated() {
+        return created;
+//        if(created != null) {
+//            created = created.replace('T', ' ');
+//            String pattern = "yyyy-MM-dd HH:mm:ss";
+//            if (created.length() > 19) {
+//                pattern += ".";
+//                for (int i = created.length() - 20; i > 0; i--) {
+//                    pattern += "S";
+//                }
+//            }
+//            LocalDateTime ldt = LocalDateTime.parse(created, DateTimeFormatter.ofPattern(pattern));
+//            return ldt;
+//        }
+//        else{
+//            return null;
+//        }
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+        //this.created = created.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     }
     //endregion
 
     //region Constructors
-    public Kweet(int ID, String text, User author, Date date, List<Activity> activity, ArrayList<User> mentions) {
-        this.ID = ID;
+    public Kweet() {
+        this.activity = new ArrayList<>();
+        this.mentions = new ArrayList<>();
+    }
+
+    public Kweet(String text, int author, List<Activity> activity, ArrayList<User> mentions) {
+        this.ID = 0;
         this.text = text;
         this.author = author;
-        this.date = date;
 
         if (activity != null) {
             this.activity = activity;
@@ -84,10 +123,11 @@ public class Kweet {
         }
     }
 
-    public Kweet(String text, User author, Date date, List<Activity> activity, ArrayList<User> mentions) {
+    public Kweet(int ID, String text, int author, LocalDateTime date, List<Activity> activity, ArrayList<User> mentions) {
+        this.ID = ID;
         this.text = text;
         this.author = author;
-        this.date = date;
+        setCreated(date);
 
         if (activity != null) {
             this.activity = activity;
@@ -112,27 +152,58 @@ public class Kweet {
         return false;
     }
 
-    public void DeleteKweet(int deleterAccountID) {
-        if (this.getAuthor().getAccount().getID() == deleterAccountID) {
-            Database.getInstance().kweetRepo.RemoveKweet(this);
-        } else {
-            if (Database.getInstance().groupRepo.HasPermission(deleterAccountID, Permission.DeleteAllKweets)) {
-                Database.getInstance().kweetRepo.RemoveKweet(this);
-            }
-        }
-    }
-    //endregion
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj.getClass() == Kweet.class) {
-            Kweet kwt2 = (Kweet) obj;
-            if (this.getAuthor().getAccount().getID() == kwt2.getAuthor().getAccount().getID() &&
-                    this.getDate() == kwt2.getDate() &&
-                    this.getText() == kwt2.getText()){
-                return true;
-            }
+    public boolean IsValid(){
+        if(text != null && text != "" && text.length() <= 140
+                && author > 0){
+            return true;
         }
         return false;
     }
+
+    public void Update(Kweet kweet) {
+        if(kweet.IsValid() && kweet.getID() == this.getID()){
+            this.text = kweet.text;
+            this.mentions = kweet.mentions;
+            this.activity = kweet.activity;
+        }
+    }
+
+//    public void DeleteKweet(int deleterAccountID) {
+//        if (this.getAuthor().getAccount().getID() == deleterAccountID) {
+//            Database.getInstance().kweetRepo.RemoveKweet(this);
+//        } else {
+//            if (Database.getInstance().groupRepo.HasPermission(deleterAccountID, Permission.DeleteAllKweets)) {
+//                Database.getInstance().kweetRepo.RemoveKweet(this);
+//            }
+//        }
+//    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Kweet) {
+            if(obj.hashCode() == this.hashCode())return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        int hashcode = 0;
+        hashcode += this.getAuthor() * 33;
+        hashcode += this.getCreated().hashCode() * 33;
+        hashcode += this.getText().hashCode() * 33;
+        hashcode += this.getActivity().hashCode() * 33;
+        hashcode += this.getMentions().hashCode() * 33;
+        return hashcode;
+    }
+
+    @Override
+    public int compareTo(Kweet kweet){
+        if(getCreated().isBefore(kweet.getCreated())) return 1;
+        else if(getCreated().isAfter(kweet.getCreated())) return -1;
+        else return 0;
+    }
+    //endregion
+
+
 }

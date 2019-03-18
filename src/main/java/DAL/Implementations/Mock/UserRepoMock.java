@@ -5,6 +5,9 @@ import DAL.Interfaces.IUser;
 import models.Account;
 import models.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserRepoMock implements IUser {
     private Database database;
 
@@ -13,7 +16,7 @@ public class UserRepoMock implements IUser {
     }
 
     @Override
-    public User LoadUser(int ID) {
+    public User GetUser(int ID) {
         for (Account acc : database.accounts) {
             if (acc.getID() == ID) {
                 return acc.getUser();
@@ -23,11 +26,33 @@ public class UserRepoMock implements IUser {
     }
 
     @Override
-    public void UpdateUsername(int ID, String username) {
+    public User UpdateUsername(int ID, String username) {
         for (Account acc : database.accounts) {
             if (acc.getID() == ID) {
                 acc.getUser().setUsername(username);
+                return acc.getUser();
             }
         }
+        return null;
+    }
+
+    @Override
+    public ArrayList<User> GetFollowers(List<Account> followers) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<User> GetFollowing(List<Account> followers) {
+        return null;
+    }
+
+    @Override
+    public void FollowUser(int idToFollow, Account Follower) {
+
+    }
+
+    @Override
+    public void UnFollowUser(int idToFollow, Account follower) {
+
     }
 }

@@ -3,12 +3,16 @@ package DAL.Interfaces;
 import models.Kweet;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public interface IKweet {
     ArrayList<Kweet> SearchKweets(String searchTerm);
     ArrayList<Kweet> SearchMentions(String searchTerm);
-    void PostKweet(int accountID, Kweet kweet);
-    ArrayList<Kweet> GetKweetsForAccount(int accountID);
 
-    void RemoveKweet(Kweet kweet);
+    TreeSet<Kweet> GetKweetsForAccount(int accountID);
+
+    Kweet GetKweet(int KweetID);
+    Kweet PostKweet(Kweet kweet);
+    Kweet UpdateKweet(Kweet kweet);
+    boolean DeleteKweet(int kweetID);
 }

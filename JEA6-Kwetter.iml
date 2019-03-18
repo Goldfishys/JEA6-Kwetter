@@ -5,9 +5,11 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <datasource-mapping>
-          <factory-entry name="Hibernate-Persistence" value="41070bc3-f337-4203-b529-3531c534dd1f" />
+          <factory-entry name="KwetterHibernatePersistence" value="41070bc3-f337-4203-b529-3531c534dd1f" />
         </datasource-mapping>
-        <naming-strategy-map />
+        <naming-strategy-map>
+          <unit-entry name="KwetterHibernatePersistence" />
+        </naming-strategy-map>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
     </facet>

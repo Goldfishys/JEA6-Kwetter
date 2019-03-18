@@ -10,8 +10,8 @@ import java.util.ArrayList;
 @Table(name = "Account")
 public class Account {
     @Id
-    @GeneratedValue
-    @Column(name = "IDaccount", updatable = false, nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "IDaccount")
     private int ID;
 
     @Column(name = "Password")
@@ -61,16 +61,11 @@ public class Account {
     public Account(String name, String password){
         this.user = new User(name, this);
         this.password = password;
+        permissions = new ArrayList<>();
     }
 
     public Account(int ID){
         this.ID = ID;
-        permissions = new ArrayList<>();
-    }
-
-    public Account(int ID, User user) {
-        this.ID = ID;
-        this.user = user;
         permissions = new ArrayList<>();
     }
     //endregion
@@ -85,11 +80,16 @@ public class Account {
     }
 
     public void LoadUser() {
-        user = Database.getInstance().userRepo.LoadUser(this.ID);
+        user = Database.getInstance().userRepo.GetUser(this.ID);
     }
 
     public void LoadGroups(){
         permissions = Database.getInstance().groupRepo.GetPermissionsForAccount(this.ID);
+    }
+
+    @Override
+    public String toString(){
+        return "ID: " + this.getID() + "User: " + this.getUser();
     }
     //endregion
 }

@@ -5,9 +5,10 @@
     <engine>
         <property name="deploymentExportPath">target/deployments</property>
     </engine>
+
     <container qualifier="jbossas-managed-wildfly-15" default="true">
         <configuration>
-            <property name="jbossHome">C:\Users\Administrator\Documents\Wildfly\wildfly-15.0.0.Final</property>
+            <property name="jbossHome">D:\Documents\Wildfly\wildfly-15.0.0.Final</property>
 
         </configuration>
     </container>

@@ -1,24 +1,20 @@
 package models;
 
-import DAL.Database;
-
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Entity
-@Table(name = "User", schema = "IEZ6hf4RcZ")
+@Table(name = "User")
 public class User {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "IDuser")
     private int id;
 
     @OneToOne
-    @JoinColumn(name = "IDaccount")
+    @JoinColumn(name = "User_IDaccount")
     private Account account;
 
     @Column(name = "Username")
@@ -26,11 +22,20 @@ public class User {
 
     @Transient
     private ArrayList<Kweet> kweets;
-    @Transient
-    private ArrayList<Account> followers;
-    @Transient
-    private ArrayList<Account> following;
-    @Transient
+
+    @OneToMany
+    @JoinTable(name="Followers",
+            joinColumns=@JoinColumn(name="IDAccountToFollow"),
+            inverseJoinColumns=@JoinColumn(name="IDuserFollower"))
+    private List<Account> followers;
+
+    @OneToMany
+    @JoinTable(name="Followers",
+            joinColumns=@JoinColumn(name="IDuserFollower"),
+            inverseJoinColumns=@JoinColumn(name="IDAccountToFollow"))
+    private List<Account> following;
+
+    @Embedded
     private Profile profile;
 
     //region get/set
@@ -58,7 +63,7 @@ public class User {
         this.kweets = kweets;
     }
 
-    public ArrayList<Account> getFollowers() {
+    public List<Account> getFollowers() {
         return followers;
     }
 
@@ -66,7 +71,7 @@ public class User {
         this.followers = followers;
     }
 
-    public ArrayList<Account> getFollowing() {
+    public List<Account> getFollowing() {
         return following;
     }
 
@@ -81,10 +86,31 @@ public class User {
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     //endregion
 
     //region Constructors
     public User() {
+        kweets = new ArrayList<>();
+        followers = new ArrayList<>();
+        following = new ArrayList<>();
+    }
+
+    public User(int id, Account account, String username) {
+        this.id = id;
+        this.account = account;
+        this.username = username;
+        kweets = new ArrayList<>();
+        followers = new ArrayList<>();
+        following = new ArrayList<>();
+        profile = new Profile();
     }
 
     public User(String username, Account account) {
@@ -99,84 +125,40 @@ public class User {
 
     //region Methods
 
-    //region KweetMethods
-    public void PostKweet(String text) {
-        if (text != null && text.length() <= 140) {
-            Kweet kweet = new Kweet(text, this, new Date(), null, null);
-            Database.getInstance().kweetRepo.PostKweet(account.getID(), kweet);
-            kweets.add(kweet);
-        }
-    }
+//    public ArrayList<Kweet> GetTimeLine(){
+//        ArrayList<Kweet> kweets = new ArrayList<>();
+//        kweets.addAll(this.GetRecentKweets());
+//
+//        for(Account follow : following){
+//            kweets.addAll(follow.getUser().GetRecentKweets());
+//        }
+//        return SortKweetsNewFirst(kweets);
+//    }
 
-    public ArrayList<Kweet> GetRecentKweets() {
-        ArrayList<Kweet> kweets = Database.getInstance().kweetRepo.GetKweetsForAccount(account.getID());
-        return SortKweetsNewFirst(kweets).stream().limit(10).collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public ArrayList<Kweet> GetTimeLine(){
-        ArrayList<Kweet> kweets = new ArrayList<>();
-        kweets.addAll(this.GetRecentKweets());
-
-        for(Account follow : following){
-            kweets.addAll(follow.getUser().GetRecentKweets());
-        }
-        return SortKweetsNewFirst(kweets);
-    }
-
-    public ArrayList<Kweet> SortKweetsNewFirst(ArrayList<Kweet> kweets){
-        kweets.sort(Comparator.comparing(o -> o.getDate(), Collections.reverseOrder()));
-        return kweets;
-    }
-    //endregion
-
-    //region Update username/profile methods
-    public void UpdateUsername(String username) {
-        if (username != "") {
-            this.username = username;
-            Database.getInstance().userRepo.UpdateUsername(account.getID(), username);
-        }
-    }
-
-    public void LoadProfile() {
-        profile = Database.getInstance().profileRepo.LoadProfileForAccount(account.getID());
-    }
-
-    public void UpdateProfile(String bio, String location, String websiteURL, String profilePicture) {
-        if (bio != "" && location != "" && websiteURL != "" && profilePicture != "") {
-            profile.UpdateProfile(bio, location, websiteURL, profilePicture);
-            Database.getInstance().profileRepo.UpdateProfile(account.getID(), bio, location, websiteURL, profilePicture);
-        }
-    }
-    //endregion
-
-    //region Followers methods
     public void AddFollower(Account follower) {
-        if (follower != null && !followers.contains(follower)) {
             followers.add(follower);
-            follower.getUser().AddFollowing(this.getAccount());
-        }
     }
 
-    private void AddFollowing(Account toFollow) {
-        if (!followers.contains(toFollow)) {
-            this.following.add(toFollow);
-        }
-    }
+//    private void AddFollowing(Account toFollow) {
+//        if (!followers.contains(toFollow)) {
+//            this.following.add(toFollow);
+//        }
+//    }
 
     public void RemoveFollower(Account followerToRemove) {
-        if (followerToRemove != null && followers.contains(followerToRemove)) {
-            followers.remove(followerToRemove);
-            followerToRemove.getUser().RemoveFollowing(this.getAccount());
-
-
-        }
+        followers.remove(followerToRemove);
     }
-    private void RemoveFollowing(Account followingToRemove) {
-        if(following.contains(followingToRemove)){
-            following.remove(followingToRemove);
-        }
+
+//    private void RemoveFollowing(Account followingToRemove) {
+//        if(following.contains(followingToRemove)){
+//            following.remove(followingToRemove);
+//        }
+//    }
+
+    @Override
+    public String toString(){
+        return "ID: " + this.id + " - Username: " + this.username +" - " + this.profile.toString() + " followers: " + followers.size() + " following: "+ following.size();
     }
-    //endregion
 
     //endregion
 

@@ -3,8 +3,7 @@ package DAL.Interfaces;
 import models.Profile;
 
 public interface IProfile {
-    Profile LoadProfileForAccount(int id);
+    Profile GetProfile(int userid);
 
-    void UpdateProfile(int id, String bio, String location, String websiteURL, String profilePicture);
-
+    Profile UpdateProfile(int id, Profile profile);
 }

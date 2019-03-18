@@ -13,7 +13,7 @@ public class ProfileRepoMock implements IProfile {
     }
 
     @Override
-    public Profile LoadProfileForAccount(int id) {
+    public Profile GetProfile(int id) {
         for(Account acc : database.accounts){
             if(acc.getID() == id) return acc.getUser().getProfile();
         }
@@ -21,12 +21,15 @@ public class ProfileRepoMock implements IProfile {
     }
 
     @Override
-    public void UpdateProfile(int id, String bio, String location, String websiteURL, String profilePicture) {
+    public Profile UpdateProfile(int id, Profile profile1) {
+        Profile p = null;
         for(Account acc : database.accounts){
             if(acc.getID() == id){
                 Profile profile = acc.getUser().getProfile();
-                profile.UpdateProfile(bio, location, websiteURL, profilePicture);
+                profile.UpdateProfile(profile1);
+                p = profile;
             }
         }
+        return p;
     }
 }

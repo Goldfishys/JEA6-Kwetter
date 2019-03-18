@@ -4,14 +4,18 @@
     <persistence-unit name="KwetterHibernatePersistence">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <class>models.User</class>
+        <class>models.Kweet</class>
         <class>models.Account</class>
         <class>models.User</class>
+        <class>models.Profile</class>
 
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://remotemysql.com:3306/IEZ6hf4RcZ"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
             <property name="hibernate.connection.username" value="IEZ6hf4RcZ"/>
             <property name="hibernate.connection.password" value="ccMBfAC6Gc"/>
+            <property name="hibernate.show_sql" value = "true" />
         </properties>
 
     </persistence-unit>

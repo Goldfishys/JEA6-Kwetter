@@ -1,23 +1,22 @@
 package Controllers;
 
+import Services.ProfileServices;
 import models.Profile;
 
-import javax.ws.rs.*;
+import javax.inject.Inject;
 
-@Path("/ProfileController")
 public class ProfileController {
-    @GET
-    @Path("/Profile/{userid}")
-    @Produces("application/json")
-    public Profile getProfile(@PathParam("userid") int a){
-        System.out.println("amount: " + a);
 
-        if(a == 0){
-            return new Profile("test","test","test", "test");
-        }
-        else{
-            return new Profile("p.png","hi im new","Netherlands", "LOL.com");
-        }
+    @Inject
+    private ProfileServices ps;
 
+
+    public Profile GetProfile(int userid){
+        return ps.GetProfile(userid);
+    }
+
+    public Profile UpdateProfile(int userid, Profile profile) {
+        ps.UpdateProfile(userid, profile);
+        return profile;
     }
 }

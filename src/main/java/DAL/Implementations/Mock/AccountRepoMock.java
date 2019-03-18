@@ -3,6 +3,9 @@ package DAL.Implementations.Mock;
 import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.ArrayList;
 
 public class AccountRepoMock implements IAccount {
     private Database database;
@@ -12,10 +15,11 @@ public class AccountRepoMock implements IAccount {
     }
 
     @Override
-    public void Register(Account account) {
+    public Account Register(Account account) {
         int id = database.accounts.size() +1;
         account.setID(id);
         database.accounts.add(account);
+        return account;
     }
 
     public Account GetAccountByID(int ID){
@@ -24,6 +28,16 @@ public class AccountRepoMock implements IAccount {
                 return acc;
             }
         }
+        return null;
+    }
+
+    @Override
+    public ArrayList<Account> GetAccounts() {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Account login(String username, String password) {
         return null;
     }
 }
