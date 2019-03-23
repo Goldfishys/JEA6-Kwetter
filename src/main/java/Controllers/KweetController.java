@@ -37,4 +37,8 @@ public class KweetController {
     public TreeSet<Kweet> GetRecentKweets(int accountID){
         return ks.GetRecentKweets(accountID);
     }
+
+    public TreeSet<Kweet> GetTimeLine(int accountID){
+        return ks.GetTimeLIne(accountID);
+    }
 }

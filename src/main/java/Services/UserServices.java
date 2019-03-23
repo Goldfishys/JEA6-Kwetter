@@ -43,6 +43,7 @@ public class UserServices {
     public void UnFollowUser(int idToFollow, int idFollower) {
         Account follower = GetUser(idFollower).getAccount();
         if(follower != null){
+            System.out.println("found the follower");
             userRepo.UnFollowUser(idToFollow, follower);
         }
     }

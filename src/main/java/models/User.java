@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -23,13 +24,13 @@ public class User {
     @Transient
     private ArrayList<Kweet> kweets;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Followers",
             joinColumns=@JoinColumn(name="IDAccountToFollow"),
             inverseJoinColumns=@JoinColumn(name="IDuserFollower"))
     private List<Account> followers;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Followers",
             joinColumns=@JoinColumn(name="IDuserFollower"),
             inverseJoinColumns=@JoinColumn(name="IDAccountToFollow"))
@@ -136,7 +137,10 @@ public class User {
 //    }
 
     public void AddFollower(Account follower) {
-            followers.add(follower);
+        for(Account acc : followers){
+            System.out.println(acc.toString());
+        }
+        followers.add(follower);
     }
 
 //    private void AddFollowing(Account toFollow) {
@@ -146,7 +150,12 @@ public class User {
 //    }
 
     public void RemoveFollower(Account followerToRemove) {
-        followers.remove(followerToRemove);
+        for (Iterator<Account> iterator = this.getFollowers().iterator(); iterator.hasNext();) {
+            Account acc = iterator.next();
+            if (acc.getID() == followerToRemove.getID()) {
+                iterator.remove();
+            }
+        }
     }
 
 //    private void RemoveFollowing(Account followingToRemove) {
@@ -158,6 +167,21 @@ public class User {
     @Override
     public String toString(){
         return "ID: " + this.id + " - Username: " + this.username +" - " + this.profile.toString() + " followers: " + followers.size() + " following: "+ following.size();
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof User){
+            if(obj == this)return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        int code = 0;
+        code += this.getId() *33;
+        return code;
     }
 
     //endregion

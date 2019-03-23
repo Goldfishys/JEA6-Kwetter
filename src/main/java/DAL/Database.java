@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Database {
     private static Database instance;
     public IAccount accountRepo;
-    public IFollower followerRepo;
     public IGroup groupRepo;
     public IKweet kweetRepo;
     public IProfile profileRepo;
@@ -20,7 +19,6 @@ public class Database {
 
     private Database(){
         accountRepo = new AccountRepo();
-        followerRepo = new FollowerRepoMock(this);
         groupRepo = new GroupRepoMock(this);
         kweetRepo = new KweetRepo();
         profileRepo = new ProfileRepoMock(this);

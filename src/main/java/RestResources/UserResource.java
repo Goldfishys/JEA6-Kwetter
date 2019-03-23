@@ -29,10 +29,10 @@ public class UserResource {
 
 
     @GET
-    @Path("/{userID}/followers")
+    @Path("/{userID}/following")
     @Produces("application/json")
     public ArrayList<User> GetFollowing(@PathParam("userID") int userID){
-        return null;
+        return uc.GetFollowing(userID);
     }
 
 
@@ -42,5 +42,19 @@ public class UserResource {
     @Produces("application/json")
     public User UpdateUsername(@PathParam("userID") int userID, String username){
         return uc.UpdateUsername(userID, username);
+    }
+
+    //2 wants to follow 1
+    //userid = 2 acc id = 1
+    @PATCH
+    @Path("/{userID}/follow/{accountID}")
+    public void FollowUser(@PathParam("userID") int userID, @PathParam("accountID") int accountID){
+        uc.FollowUser(accountID, userID);
+    }
+
+    @PATCH
+    @Path("/{userID}/unfollow/{accountID}")
+    public void UnFollowUser(@PathParam("userID") int userID, @PathParam("accountID") int accountID){
+        uc.UnFollowUser(accountID, userID);
     }
 }

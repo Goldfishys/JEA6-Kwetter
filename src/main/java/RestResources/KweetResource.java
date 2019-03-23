@@ -59,4 +59,19 @@ public class KweetResource {
         return kc.GetRecentKweets(accountID);
     }
 
+    @GET
+    @Path("/timeline/{accountID}")
+    @Produces("application/json")
+    public TreeSet<Kweet> GetTimeLine(@PathParam("accountID") int accountID){
+        return kc.GetTimeLine(accountID);
+    }
+
+    @GET
+    @Path("/date/{accountID}")
+    @Produces("application/json")
+    public Kweet GetTimeLineDate(@PathParam("accountID") int accountID){
+        return kc.GetTimeLine(accountID).first();
+    }
+
+
 }

@@ -1,5 +1,11 @@
 package models;
 
+import Jackson.JsonDateDeserializer;
+import Jackson.JsonDateSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +18,7 @@ public class Kweet implements Comparable<Kweet>{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "IDkweet")
+    @JsonProperty("id")
     private int ID;
 
     @Column(name = "KweetText")
@@ -21,6 +28,9 @@ public class Kweet implements Comparable<Kweet>{
     private int author;
 
     @Column
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+    @JsonSerialize(using = JsonDateSerializer.class)
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime created;
 
     @Transient

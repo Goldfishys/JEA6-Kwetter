@@ -7,6 +7,7 @@ import models.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -56,6 +57,7 @@ public class UserResourceTest {
     UserController uc;
 
     @Test
+    @InSequence(1)
     public void GetUserWhiteBox() {
         int id = 2;
         User user = uc.GetUser(id);
@@ -63,6 +65,21 @@ public class UserResourceTest {
     }
 
     @Test
+    @RunAsClient
+    @InSequence(2)
+    public void GetUserBlackBox(){
+        int userID = 1;
+        String location = "kwetter/user/" + userID;
+        Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
+        System.out.println("Body:" + response.getBody().asString());
+
+        User user = response.getBody().as(User.class);
+        System.out.println(user.toString());
+        Assert.assertEquals(1, user.getId());
+    }
+
+    @Test
+    @InSequence(3)
     public void GetFollowersWhiteBox(){
         int id = 2;
         User user = uc.GetUser(id);
@@ -74,6 +91,20 @@ public class UserResourceTest {
     }
 
     @Test
+    @RunAsClient
+    @InSequence(4)
+    public void GetFollowersBlackBox(){
+        int userID = 2;
+        String location = "kwetter/user/" + userID + "/followers";
+        Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
+        System.out.println(response.getBody().asString());
+
+        User[] followers = response.getBody().as(User[].class);
+        Assert.assertEquals(1, followers.length);
+    }
+
+    @Test
+    @InSequence(5)
     public void GetFollowingWhiteBox(){
         int id = 1;
         User user = uc.GetUser(id);
@@ -85,6 +116,20 @@ public class UserResourceTest {
     }
 
     @Test
+    @RunAsClient
+    @InSequence(6)
+    public void GetFollowingBlackBox(){
+        int userID = 1;
+        String location = "kwetter/user/" + userID + "/following";
+        Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
+        System.out.println(response.getBody().asString());
+
+        User[] followers = response.getBody().as(User[].class);
+        Assert.assertEquals(1, followers.length);
+    }
+
+    @Test
+    @InSequence(7)
     public void FollowUserWhiteBox(){
         //2 wants to follow 1
         int idToFollow = 1;
@@ -99,6 +144,7 @@ public class UserResourceTest {
     }
 
     @Test
+    @InSequence(8)
     public void UnFollowUserWhiteBox(){
         //2 doesnt want to follow 1 anymore
         int idToFollow = 1;
@@ -113,20 +159,44 @@ public class UserResourceTest {
     }
 
     @Test
+    @InSequence(9)
     @RunAsClient
-    public void GetUserBlackBox(){
-        int userID = 1;
-        String location = "kwetter/user/" + userID;
-        Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
-        System.out.println("Body:" + response.getBody().asString());
+    public void FollowUserBlackBox(){
+        //2 wants to follow 1
+        int idToFollow = 1;
+        int idFollower = 2;
+        String location = "kwetter/user/" + idFollower + "/follow/" + idToFollow;
+        given().contentType(ContentType.JSON).when().patch(basePath + location).then().statusCode(204);
 
-        User user = response.getBody().as(User.class);
-        System.out.println(user.toString());
-        Assert.assertEquals(1, user.getId());
+        location = "kwetter/user/" + idToFollow + "/followers";
+        Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
+        System.out.println(response.getBody().asString());
+
+        User[] followers = response.getBody().as(User[].class);
+        Assert.assertEquals(1, followers.length);
+    }
+
+    @Test
+    @InSequence(10)
+    @RunAsClient
+    public void UnFollowUserBlackBox(){
+        //2 doesnt want to follow 1 anymore
+        int idToFollow = 1;
+        int idFollower = 2;
+        String location = "kwetter/user/" + idFollower + "/unfollow/" + idToFollow;
+        given().contentType(ContentType.JSON).when().patch(basePath + location).then().statusCode(204);
+
+        location = "kwetter/user/" + idToFollow + "/followers";
+        Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
+        System.out.println(response.getBody().asString());
+
+        User[] followers = response.getBody().as(User[].class);
+        Assert.assertEquals(0, followers.length);
     }
 
     @Test
     @RunAsClient
+    @InSequence(11)
     public void UpdateUsernameBlackBox(){
         String username = "PraiseTheSun";
         int userID = 1;

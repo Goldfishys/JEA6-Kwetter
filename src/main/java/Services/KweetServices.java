@@ -1,9 +1,12 @@
 package Services;
 
 import DAL.Implementations.Database.KweetRepo;
+import DAL.Implementations.Database.UserRepo;
 import models.Kweet;
+import models.User;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -11,13 +14,17 @@ import java.util.stream.Collectors;
 @Stateless
 public class KweetServices {
 
+    @Inject
     private KweetRepo kweetRepo;
+
+    @Inject
+    private UserRepo userRepo;
 
     //region constructors
     public KweetServices() {
-        kweetRepo = new KweetRepo();
+
     }
-    //end region
+    //endregion
 
     //region methods
     public ArrayList<Kweet> SearchKweets(String searchTerm, boolean mentions) {
@@ -52,8 +59,17 @@ public class KweetServices {
     }
 
     public TreeSet<Kweet> GetRecentKweets(int accountID) {
-        TreeSet<Kweet> kweets = kweetRepo.GetKweetsForAccount(accountID);
-        return kweets.stream().limit(10).collect(Collectors.toCollection(TreeSet::new));
+        return kweetRepo.GetKweetsForAccount(accountID).stream().limit(10).collect(Collectors.toCollection(TreeSet::new));
     }
-    //end region
+
+    public TreeSet<Kweet> GetTimeLIne(int accountID) {
+        ArrayList<User> following = userRepo.GetFollowing(userRepo.GetUser(accountID).getFollowing());
+        TreeSet<Kweet> timeLine = GetRecentKweets(accountID);
+        for(User usr : following){
+            timeLine.addAll(GetRecentKweets(usr.getAccount().getID()));
+        }
+
+        return timeLine;
+    }
+    //endregion
 }
