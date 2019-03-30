@@ -1,0 +1,71 @@
+#maindiv {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: lightgray;
+}
+
+#topdiv {
+  width: 100%;
+  height: 15%;
+  top: 0%;
+  position: absolute;
+}
+
+#searchbardiv {
+  width: 70%;
+  height: 100%;
+  position: absolute;
+}
+
+#logoutdiv {
+  width: 30%;
+  height: 100%;
+  left: 70%;
+  position: absolute;
+}
+
+#bottomdiv {
+  width: 100%;
+  height: 85%;
+  top: 15%;
+  position: absolute;
+}
+
+#leftdiv {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+}
+
+#whatshappeningdiv {
+  width: 100%;
+  height: 40%;
+  position: relative;
+}
+
+#contentdiv {
+  width: 100%;
+  height: 60%;
+  position: relative;
+  overflow-y: scroll;
+}
+
+#rightdiv {
+  width: 50%;
+  height: 100%;
+  left: 50%;
+  position: absolute;
+}
+
+#detailsdiv {
+  width: 100%;
+  height: 40%;
+  position: relative;
+}
+
+#trenddiv {
+  width: 100%;
+  height: 60%;
+  position: relative;
+}
