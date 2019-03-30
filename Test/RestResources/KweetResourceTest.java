@@ -1,7 +1,6 @@
 package RestResources;
 
 import Controllers.KweetController;
-import DAL.Implementations.Database.KweetRepo;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 import models.Kweet;
@@ -64,13 +63,14 @@ public class KweetResourceTest {
     @Inject
     KweetController kc;
 
-    static int kweetID = 52;
+    static int kweetID;
 
     @Test
     @InSequence(1)
     public void PostKweetWhiteBox() {
-        String text = "My first message :)";
-        Kweet kweet = new Kweet(text, 2, null, null);
+        //post new kweet
+        String text = "testing new JPA";
+        Kweet kweet = new Kweet(text, 1, null, null);
         Kweet returnKweet = kc.PostKweet(kweet);
         Assert.assertEquals(kweet.getText(), returnKweet.getText());
         System.out.println("ID: " + kweet.getID());
@@ -82,7 +82,6 @@ public class KweetResourceTest {
     @RunAsClient
     @InSequence(2)
     public void PostKweetBlackBox() {
-        System.out.println("base path: " + basePath);
         //for user create kweet
         String location = "kwetter/kweet";
         String text = "TestMessage";
@@ -112,7 +111,7 @@ public class KweetResourceTest {
     @Test
     @InSequence(4)
     public void UpdateKweetWhitebox() throws Exception {
-        int kweetid = 10;
+        int kweetid = 1;
         //get kweet
         Kweet kweet = kc.GetKweet(kweetid);
         String textupdate = "check JPA still works";
@@ -155,7 +154,7 @@ public class KweetResourceTest {
     @Test
     @InSequence(6)
     public void GetRecentKweetsWhiteBox() {
-        TreeSet<Kweet> recentKweets = new KweetRepo().GetKweetsForAccount(1);
+        TreeSet<Kweet> recentKweets = kc.GetRecentKweets(1);
         System.out.println(recentKweets.size());
         for (Kweet kweet : recentKweets) {
             System.out.println("Text: " + kweet.getText() + " Created: " + kweet.getCreated());

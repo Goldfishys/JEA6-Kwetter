@@ -1,0 +1,6 @@
+{
+  "/kwetter": {
+    "target": "http://localhost:8080/javaee8-essentials-archetype",
+    "secure": true
+  }
+}

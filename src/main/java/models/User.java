@@ -14,7 +14,7 @@ public class User {
     @Column(name = "IDuser")
     private int id;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "User_IDaccount")
     private Account account;
 

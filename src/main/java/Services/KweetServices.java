@@ -5,13 +5,13 @@ import DAL.Implementations.Database.UserRepo;
 import models.Kweet;
 import models.User;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-@Stateless
+@RequestScoped
 public class KweetServices {
 
     @Inject
@@ -22,7 +22,6 @@ public class KweetServices {
 
     //region constructors
     public KweetServices() {
-
     }
     //endregion
 

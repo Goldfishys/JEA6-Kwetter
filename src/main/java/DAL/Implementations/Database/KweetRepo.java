@@ -5,32 +5,27 @@ import models.Kweet;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 @RequestScoped
-public class KweetRepo implements IKweet {
+public class KweetRepo implements IKweet, Serializable {
 
-    EntityManagerFactory emf;
+    @PersistenceContext
+    private EntityManager em;
 
     public KweetRepo() {
-        emf = Persistence.createEntityManagerFactory("KwetterHibernatePersistence");
     }
 
     @Override
     public ArrayList<Kweet> SearchKweets(String searchTerm) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            searchTerm = "%" + searchTerm + "%";
-            Query query = em.createQuery("SELECT k from Kweet k where LOWER(k.text) like :searchTerm")
-                    .setParameter("searchTerm", searchTerm.toLowerCase());
-            return new ArrayList<>(query.getResultList());
-        } finally {
-            em.close();
-        }
+        searchTerm = "%" + searchTerm + "%";
+        Query query = em.createQuery("SELECT k from Kweet k where LOWER(k.text) like :searchTerm")
+                .setParameter("searchTerm", searchTerm.toLowerCase());
+        return new ArrayList<>(query.getResultList());
     }
 
     @Override
@@ -40,75 +35,38 @@ public class KweetRepo implements IKweet {
 
     @Override
     public TreeSet<Kweet> GetKweetsForAccount(int accountID) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            Query query = em.createQuery("select k from Kweet k where k.author = :accountID")
-                    .setParameter("accountID", accountID);
-            return new TreeSet<>(query.getResultList());
-        } finally {
-            em.close();
-        }
+        System.out.println("got here!");
+        System.out.println("em: " + em);
+        Query query = em.createQuery("select k from Kweet k where k.author = :accountID")
+                .setParameter("accountID", accountID);
+        System.out.println("query: " + query);
+        return new TreeSet<>(query.getResultList());
+
     }
 
     @Override
     public Kweet GetKweet(int KweetID) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(Kweet.class, KweetID);
-        }finally {
-            em.close();
-        }
+        return em.find(Kweet.class, KweetID);
     }
 
     @Override
     public boolean DeleteKweet(int kweetID) {
-        EntityManager em = emf.createEntityManager();
         Kweet kweet = em.find(Kweet.class, kweetID);
-        try {
-            em.getTransaction().begin();
-            em.remove(kweet);
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            return false;
-        }finally {
-            em.close();
-        }
-
+        em.remove(kweet);
         return true;
     }
 
     @Override
     public Kweet PostKweet(Kweet kweet) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            if(!em.getTransaction().isActive()) {
-                em.getTransaction().begin();
-            }
-            em.persist(kweet);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+        em.persist(kweet);
         return kweet;
     }
 
     @Override
     public Kweet UpdateKweet(Kweet kweet) {
-        EntityManager em = emf.createEntityManager();
-
         Kweet kweetem = em.find(Kweet.class, kweet.getID());
-
-        try {
-            if(!em.getTransaction().isActive()) {
-                em.getTransaction().begin();
-            }
-            kweetem.Update(kweet);
-            em.merge(kweetem);
-            em.getTransaction().commit();
-        }
-        finally {
-            em.close();
-        }
+        kweetem.Update(kweet);
+        em.merge(kweetem);
         return kweetem;
     }
 }

@@ -57,7 +57,7 @@ public class AccountResourceTest {
         Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
 
         Account account = response.getBody().as(Account.class);
-        Assert.assertEquals(0, account.getID());
+        Assert.assertEquals(accid, account.getID());
     }
 
     @Test

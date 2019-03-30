@@ -61,6 +61,8 @@ public class UserResourceTest {
     public void GetUserWhiteBox() {
         int id = 2;
         User user = uc.GetUser(id);
+        System.out.println(user.toString());
+        System.out.println(user.getAccount().toString());
         Assert.assertEquals(id, user.getId());
     }
 
