@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./kweet.component.css']
 })
 export class KweetComponent implements OnInit {
+
   @Input() kweetid: number;
   kweet:any;
 
@@ -22,7 +23,7 @@ export class KweetComponent implements OnInit {
     this.rest.getKweet(this.kweetid).subscribe((data: any) => {
       this.kweet = data;
       this.getUsername();
-      console.log(data.text);
+      console.log(this.kweet);
     });
   }
 

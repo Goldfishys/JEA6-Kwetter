@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {RestService} from "../rest.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-startpagina',
@@ -7,9 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StartpaginaComponent implements OnInit {
 
-  constructor() { }
+  constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   }
-
 }

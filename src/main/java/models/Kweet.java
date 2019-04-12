@@ -115,6 +115,13 @@ public class Kweet implements Comparable<Kweet>{
         this.mentions = new ArrayList<>();
     }
 
+    public Kweet(String text, int author) {
+        this.text = text;
+        this.author = author;
+        this.activity = new ArrayList<>();
+        this.mentions = new ArrayList<>();
+    }
+
     public Kweet(String text, int author, List<Activity> activity, ArrayList<User> mentions) {
         this.ID = 0;
         this.text = text;

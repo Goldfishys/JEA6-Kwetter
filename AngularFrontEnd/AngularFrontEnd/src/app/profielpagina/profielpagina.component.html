@@ -1,0 +1,42 @@
+<div class="main-div">
+  <div class="top-div">
+    <div class="logout-div"></div>
+  </div>
+
+  <div class="bottom-div">
+    <div class="left-div">
+      <div class="profile-header-div">
+        <img class="profile-picture" src="{{profiledetails.profilePicture}}"/>
+        <p class="username-p">Username: {{profiledetails.username}}</p>
+      </div>
+      <div class="recent-tweets-div">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <div class="right-div">
+      <div class="profile-details-div">
+        <p>Username:
+          {{profiledetails.username}}</p>
+        <p>Location:
+          {{profiledetails.location}}</p>
+        <p>Website:
+          <a href="//{{profiledetails.websiteURL}}" target="_blank">{{profiledetails.websiteURL}}</a></p>
+        <p>Bio:
+          {{profiledetails.bio}}
+        </p>
+      </div>
+      <div class="btn-div">
+        <a [routerLink]="['followers']" [queryParams]="{userid:this.userid}" >followers</a> <br/>
+        <a>Kweets</a>
+      </div>
+      <div class="followers-output-div">
+        <h2>Following</h2>
+        <p *ngFor="let f of following; let i=index;">Username:
+          <a routerLink="/profile" [queryParams]="{userid:f.id}">
+            {{f.username}}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

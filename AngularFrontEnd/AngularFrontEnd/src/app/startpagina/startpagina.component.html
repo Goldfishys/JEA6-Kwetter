@@ -1,17 +1,33 @@
-<div id="maindiv">
-  <div id="topdiv">
-    <div id="searchbardiv"></div>
-    <div id="logoutdiv"></div>
+<div class="main-div">
+  <div class="top-div">
+    <div class="left-top-div">
+      <div class="search-bar-div">
+        <input #term type="text" class="text-input-field"  value="">
+        <a [routerLink]="['/searchkweets']" [queryParams]="{searchterm:term.value}" class="nav-content-btn">
+          Search
+        </a>
+      </div>
+    </div>
+    <div class="logout-div"></div>
   </div>
 
-  <div id="bottomdiv">
-    <div id="leftdiv">
-      <div id="whatshappeningdiv"></div>
-      <div id="contentdiv"><app-timeline></app-timeline></div>
+  <div class="bottom-div">
+    <div class="left-div">
+      <div class="whats-happening-div">
+        <app-postkweet></app-postkweet>
+      </div>
+      <div class="content-div">
+          <a [routerLink]="['']" class="nav-content-btn">
+            TimeLine
+          </a>
+        <div class="router-outlet">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
     </div>
-    <div id="rightdiv">
-      <div id="detailsdiv"></div>
-      <div id="trenddiv"></div>
+    <div class="right-div">
+      <div class="details-div"></div>
+      <div class="trend-div"></div>
     </div>
   </div>
 </div>

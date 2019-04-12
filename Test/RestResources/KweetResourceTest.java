@@ -85,7 +85,7 @@ public class KweetResourceTest {
         //for user create kweet
         String location = "kwetter/kweet";
         String text = "TestMessage";
-        Kweet kweet = new Kweet(text, 1, null, null);
+        Kweet kweet = new Kweet(text, 1);
         Response response = given().body(kweet).contentType(ContentType.JSON).when().post(basePath + location);
 
         //check response

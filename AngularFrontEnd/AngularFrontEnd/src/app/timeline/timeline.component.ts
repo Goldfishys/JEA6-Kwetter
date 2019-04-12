@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {RestService} from "../rest.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {KweetComponent} from "../kweet/kweet.component";
 
 @Component({
   selector: 'app-timeline',
@@ -12,10 +11,12 @@ export class TimelineComponent implements OnInit {
 
   kweets:any = [];
 
-  constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) { }
+  constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) {
+    this.getTimeLine();
+  }
+
 
   ngOnInit() {
-    this.getTimeLine();
   }
 
   public getTimeLine(){

@@ -1,71 +1,131 @@
-#maindiv {
+.main-div {
   width: 100%;
   height: 100%;
   position: relative;
   background-color: lightgray;
 }
 
-#topdiv {
+.top-div {
   width: 100%;
   height: 15%;
   top: 0%;
   position: absolute;
+  -webkit-box-shadow: 0px -14px 0px 18px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px -14px 0px 18px rgba(0,0,0,0.75);
+  box-shadow: 0px -14px 0px 18px rgba(0,0,0,0.75);
 }
 
-#searchbardiv {
+.left-top-div {
   width: 70%;
   height: 100%;
-  position: absolute;
+  padding-left: 5%;
+  padding-top:3%;
+  position: relative;
 }
 
-#logoutdiv {
+.logout-div {
   width: 30%;
   height: 100%;
   left: 70%;
   position: absolute;
 }
 
-#bottomdiv {
-  width: 100%;
-  height: 85%;
-  top: 15%;
+.bottom-div {
+  width: 90%;
+  height: 80%;
+  top: 20%;
+  left:5%;
   position: absolute;
 }
 
-#leftdiv {
+.left-div {
   width: 50%;
   height: 100%;
   position: absolute;
 }
 
-#whatshappeningdiv {
+.whats-happening-div {
   width: 100%;
   height: 40%;
   position: relative;
 }
 
-#contentdiv {
+.nav-content-div{
+  position: relative;
+  left:3%;
+}
+
+.content-div {
   width: 100%;
   height: 60%;
   position: relative;
-  overflow-y: scroll;
 }
 
-#rightdiv {
+.router-outlet {
+  top: 5%;
+  overflow-y:scroll;
+  position:relative;
+  height:88%;
+  width:100%;
+}
+
+.right-div {
   width: 50%;
   height: 100%;
   left: 50%;
   position: absolute;
 }
 
-#detailsdiv {
+.details-div {
   width: 100%;
   height: 40%;
   position: relative;
 }
 
-#trenddiv {
+.trend-div {
   width: 100%;
   height: 60%;
   position: relative;
 }
+
+.nav-content-btn {
+  -moz-box-shadow:inset 0px 1px 0px 0px #050505;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #050505;
+  box-shadow:inset 0px 1px 0px 0px #050505;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d12ff), color-stop(1, #707cff));
+  background:-moz-linear-gradient(top, #3d12ff 5%, #707cff 100%);
+  background:-webkit-linear-gradient(top, #3d12ff 5%, #707cff 100%);
+  background:-o-linear-gradient(top, #3d12ff 5%, #707cff 100%);
+  background:-ms-linear-gradient(top, #3d12ff 5%, #707cff 100%);
+  background:linear-gradient(to bottom, #3d12ff 5%, #707cff 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d12ff', endColorstr='#707cff',GradientType=0);
+  background-color:#3d12ff;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  border:1px solid #dcdcdc;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:15px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #292429;
+}
+.nav-content-btn:hover {
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #707cff), color-stop(1, #3d12ff));
+  background:-moz-linear-gradient(top, #707cff 5%, #3d12ff 100%);
+  background:-webkit-linear-gradient(top, #707cff 5%, #3d12ff 100%);
+  background:-o-linear-gradient(top, #707cff 5%, #3d12ff 100%);
+  background:-ms-linear-gradient(top, #707cff 5%, #3d12ff 100%);
+  background:linear-gradient(to bottom, #707cff 5%, #3d12ff 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#707cff', endColorstr='#3d12ff',GradientType=0);
+  background-color:#707cff;
+}
+.nav-content-btn:active {
+  position:relative;
+  top:1px;
+}
+

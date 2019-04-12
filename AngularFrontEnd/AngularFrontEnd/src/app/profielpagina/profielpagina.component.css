@@ -1,0 +1,89 @@
+.main-div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: lightgray;
+  overflow:hidden;
+}
+
+.top-div {
+  width: 100%;
+  height: 15%;
+  top: 0%;
+  position: absolute;
+  -webkit-box-shadow: 0px -14px 0px 18px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px -14px 0px 18px rgba(0,0,0,0.75);
+  box-shadow: 0px -14px 0px 18px rgba(0,0,0,0.75);
+}
+
+.logout-div {
+  width: 30%;
+  height: 100%;
+  left: 70%;
+  position: absolute;
+}
+
+.bottom-div {
+  width: 90%;
+  height: 80%;
+  top: 20%;
+  left:5%;
+  position: absolute;
+}
+
+.left-div {
+  width: 50%;
+  height: 100%;
+  position: absolute;
+}
+
+.right-div {
+  width: 50%;
+  height: 100%;
+  left: 50%;
+  position: absolute;
+}
+
+.profile-header-div{
+  width: 100%;
+  height: 30%;
+  position: relative;
+}
+
+.recent-tweets-div{
+  top: 10%;
+  width: 95%;
+  height: 60%;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.profile-details-div {
+  width: 100%;
+  height:40%;
+  position: relative;
+}
+
+.btn-div {
+  width:100%;
+  height:20%;
+  position: relative;
+}
+
+.followers-output-div {
+  width:100%;
+  height:39%;
+  position: relative;
+}
+
+.profile-picture {
+  float: left;
+  max-width: 200px;
+  max-height: 200px;
+  position: relative;
+}
+
+.username-p {
+  padding-left: 10px;
+  float: left;
+}

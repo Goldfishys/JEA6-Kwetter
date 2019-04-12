@@ -7,15 +7,23 @@ import { KweetComponent } from './kweet/kweet.component';
 import { StartpaginaComponent } from './startpagina/startpagina.component';
 import {AppRoutingModule} from "./app-routing.module";
 import { TimelineComponent } from './timeline/timeline.component';
-
-
+import { SearchkweetsComponent } from './searchkweets/searchkweets.component';
+import { PostkweetComponent } from './postkweet/postkweet.component';
+import { ProfielpaginaComponent } from './profielpagina/profielpagina.component';
+import { RecentkweetsComponent } from './recentkweets/recentkweets.component';
+import { FollowersComponent } from './followers/followers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     KweetComponent,
     StartpaginaComponent,
-    TimelineComponent
+    TimelineComponent,
+    SearchkweetsComponent,
+    PostkweetComponent,
+    ProfielpaginaComponent,
+    RecentkweetsComponent,
+    FollowersComponent
   ],
   imports: [
     AppRoutingModule,
