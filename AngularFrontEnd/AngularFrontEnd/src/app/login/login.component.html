@@ -1,0 +1,8 @@
+<div class="Login" *ngIf="!jwt.loggedIn">
+  <input #Username type="text" class="text-input-field" value="">
+  <br/>
+  <input #Password type="text" class="text-input-field" value="">
+  <br/>
+  <button routerLink="//" (click)="Login(Username.value, Password.value)">Login</button>
+  <p>{{statusMessage}}</p>
+</div>
