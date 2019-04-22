@@ -6,6 +6,7 @@ import {SearchkweetsComponent} from "./searchkweets/searchkweets.component";
 import {ProfielpaginaComponent} from "./profielpagina/profielpagina.component";
 import {RecentkweetsComponent} from "./recentkweets/recentkweets.component";
 import {FollowersComponent} from "./followers/followers.component";
+import {LoginComponent} from "./login/login.component";
 
 const routes: Routes = [
   {
@@ -13,8 +14,8 @@ const routes: Routes = [
     component: StartpaginaComponent,
     children: [
       {
-        path: "",
-        component: TimelineComponent,
+        path: '',
+        component: TimelineComponent
       },
       {
         path: "searchkweets",
@@ -23,27 +24,30 @@ const routes: Routes = [
     ]
   },
   {
-    path: "profile",
+    path: "profile/:id",
     component: ProfielpaginaComponent,
+    runGuardsAndResolvers: "pathParamsChange",
     children:[
       {
         path:"",
-        component: RecentkweetsComponent
+        component: RecentkweetsComponent,
+        runGuardsAndResolvers: "pathParamsChange"
       },
       {
         path:"followers",
-        component:FollowersComponent
+        component:FollowersComponent,
+        runGuardsAndResolvers: "pathParamsChange"
       }
     ]
   },
   {
-    path:"profilerf",
-    redirectTo:"profile"
+    path: 'login',
+    component: LoginComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: "reload"})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

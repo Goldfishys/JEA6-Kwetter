@@ -1,6 +1,7 @@
 package RestResources;
 
 import Controllers.KweetController;
+import com.airhacks.JWTTokenNeeded;
 import models.Kweet;
 
 import javax.inject.Inject;
@@ -19,11 +20,13 @@ public class KweetResource {
     @Produces("application/json")
     public ArrayList<Kweet> SearchKweets(@PathParam("SearchTerm") String SearchTerm) {
         ArrayList<Kweet> kwts = kc.SearchKweets(SearchTerm, false);
+        System.out.println("found your kweets :)");
         return kwts;
     }
 
     @POST
     @Path("")
+    @JWTTokenNeeded
     @Consumes("application/json")
     @Produces("application/json")
     public Kweet PostKweet(Kweet kweet) {
@@ -60,6 +63,7 @@ public class KweetResource {
     }
 
     @GET
+    @JWTTokenNeeded
     @Path("/timeline/{accountID}")
     @Produces("application/json")
     public TreeSet<Kweet> GetTimeLine(@PathParam("accountID") int accountID){

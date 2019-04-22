@@ -9,10 +9,9 @@ import {map, catchError, tap} from 'rxjs/operators';
 export class RestService {
 
   endpoint = 'http://localhost:8080/javaee8-essentials-archetype/kwetter';
+  headers_object = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem("access_token"));
   httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    })
+    headers: this.headers_object
   };
 
   constructor(private http: HttpClient) {
@@ -39,21 +38,23 @@ export class RestService {
   }
 
   getTimeLine(id): Observable<any> {
-    return this.http.get(this.endpoint + '/kweet/timeline/' + id).pipe(
+    console.log("token is:");
+    console.log(localStorage.getItem('access_token'));
+    return this.http.get(this.endpoint + '/kweet/timeline/' + id, this.httpOptions).pipe(
       map(this.extractData));
   }
 
-  getKweet(id): any {
+  getKweet(id): Observable<any> {
     return this.http.get(this.endpoint + '/kweet/' + id).pipe(
       map(this.extractData));
   }
 
-  getUser(id): any {
+  getUser(id): Observable<any> {
     return this.http.get(this.endpoint + '/user/' + id).pipe(
       map(this.extractData));
   }
 
-  getProfile(userid): any {
+  getProfile(userid): Observable<any> {
     return this.http.get(this.endpoint + '/profile/' + userid).pipe(
       map(this.extractData));
   }
@@ -77,10 +78,10 @@ export class RestService {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      // console.error(error); // log to console instead
+      console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      // console.log(`${operation} failed: ${error.message}`);
+      console.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

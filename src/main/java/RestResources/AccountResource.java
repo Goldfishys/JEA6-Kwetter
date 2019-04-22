@@ -2,6 +2,7 @@ package RestResources;
 
 import Controllers.AccountController;
 import models.Account;
+import models.JwtToken;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -27,12 +28,15 @@ public class AccountResource {
         return ac.GetAccounts();
     }
 
-    @GET
+    @POST
     @Path("/login")
     @Consumes("application/json")
     @Produces("application/json")
-    public Account Login(ArrayList<String> params){
-        return ac.login(params.get(0), params.get(1));
+    public JwtToken Login(ArrayList<String> args){
+        System.out.println("Size: " + args.size());
+        System.out.println(args.get(0));
+        System.out.println(args.get(1));
+        return ac.login(args.get(0), args.get(1));
     }
 
 }

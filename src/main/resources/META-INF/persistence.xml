@@ -16,7 +16,8 @@
             <!--<property name="hibernate.connection.username" value="IEZ6hf4RcZ"/>-->
             <!--<property name="hibernate.connection.password" value="ccMBfAC6Gc"/>-->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <property name="hibernate.show_sql" value = "true" />
+            <!--<property name="hibernate.show_sql" value = "true" />-->
+            <property name="log4j.logger.org.hibernat" value="error"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
 

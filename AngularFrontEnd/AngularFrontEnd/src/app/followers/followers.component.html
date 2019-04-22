@@ -1,6 +1,6 @@
 <h3>Followers</h3>
 <p *ngFor="let f of followers; let i=index;">Username:
-<a routerLink="/profile" [queryParams]="{userid:f.id}">
+<a [routerLink]="['/profile', f.id]">
   {{f.username}}
 </a>
 </p>

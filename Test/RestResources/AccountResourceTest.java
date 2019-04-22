@@ -83,9 +83,9 @@ public class AccountResourceTest {
         params.add(username);
         params.add(password);
 
-        Response response = given().contentType(ContentType.JSON).body(params).when().get(basePath + location);
+        Response response = given().contentType(ContentType.JSON).body(params).when().post(basePath + location);
 
-        Account acc = response.getBody().as(Account.class);
-        System.out.println(acc);
+        String token = response.getBody().as(String.class);
+        System.out.println(token);
     }
 }

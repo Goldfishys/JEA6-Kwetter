@@ -2,6 +2,7 @@ package Controllers;
 
 import Services.AccountServices;
 import models.Account;
+import models.JwtToken;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class AccountController {
         return as.GetAccounts();
     }
 
-    public Account login(String username, String password) {
+    public JwtToken login(String username, String password) {
         System.out.println("username: "+ username + " password: " + password);
         return as.login(username, password);
     }

@@ -1,26 +1,41 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RestService} from "../rest.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-recentkweets',
   templateUrl: './recentkweets.component.html',
   styleUrls: ['./recentkweets.component.css']
 })
-export class RecentkweetsComponent implements OnInit {
+export class RecentkweetsComponent implements OnInit,OnDestroy {
   public userid:number;
   public recentkweets:any = [];
   public following:any = [];
   public followers:any = [];
+  navigationSubscription;
 
   constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) {
-    route.queryParams.subscribe(params => {
-      this.userid = params.userid;
-      console.log("userid in rk: " + params.userid)
-    })
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        this.initialiseRecentKweets();
+      }
+    });
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(): void {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
+  }
+
+  private initialiseRecentKweets(){
+    this.route.params.subscribe(params => {
+      this.userid = +params['id'];
+      console.log("userid pp: " + this.userid);
+    });
     console.log("userid: " + this.userid);
     this.getRecentKweets();
   }

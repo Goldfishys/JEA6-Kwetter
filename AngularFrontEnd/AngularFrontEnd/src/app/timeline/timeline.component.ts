@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RestService} from "../rest.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {JwtService} from "../jwt.service";
 
 @Component({
   selector: 'app-timeline',
@@ -9,9 +10,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class TimelineComponent implements OnInit {
 
-  kweets:any = [];
+  kweets: any = [];
 
-  constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) {
+  constructor(public rest: RestService, private jwt: JwtService, private router: Router) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
     this.getTimeLine();
   }
 
@@ -19,12 +23,16 @@ export class TimelineComponent implements OnInit {
   ngOnInit() {
   }
 
-  public getTimeLine(){
-    this.kweets= [];
-    this.rest.getTimeLine(1).subscribe((data: {}) =>{
-      console.log(data)
-      this.kweets = data;
-    });
+  public getTimeLine() {
+    this.kweets = [];
+    if (this.jwt.loggedIn) {
+      this.rest.getTimeLine(this.jwt.getCurretnUser.userid).subscribe((data: {}) => {
+          console.log(data)
+          this.kweets = data;
+        }
+      )
+    }
+    ;
   }
 
 

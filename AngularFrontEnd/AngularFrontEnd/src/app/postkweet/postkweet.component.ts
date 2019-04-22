@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RestService} from "../rest.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {JwtService} from "../jwt.service";
 
 @Component({
   selector: 'app-postkweet',
@@ -11,16 +12,16 @@ export class PostkweetComponent implements OnInit {
 
   @Input() kweetdata = {
     text:"",
-    author:1
+    author: 0
   };
 
-  constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) { }
+  constructor(public rest:RestService, public jwt:JwtService) { }
 
   ngOnInit() {
-    this.kweetdata.author = 1;
   }
 
   public postkweet(){
+    this.kweetdata.author = this.jwt.getCurretnUser.userid;
     this.rest.postkweet(this.kweetdata).subscribe((err) => {
       console.log(err);
     });

@@ -1,23 +1,35 @@
 <div class="main-div">
   <div class="top-div">
     <div class="left-top-div">
+      <div class="image-div">
+        <a routerLink="//">
+          <img class="img-logo" src="https://abilitynet.org.uk/sites/abilitynet.org.uk/files/admin/alltwitter-twitter-bird-logo-white-on-blue.png">
+        </a>
+      </div>
       <div class="search-bar-div">
         <input #term type="text" class="text-input-field"  value="">
         <a [routerLink]="['/searchkweets']" [queryParams]="{searchterm:term.value}" class="nav-content-btn">
           Search
         </a>
       </div>
+      <div class="top-right-div">
+        <button [routerLink]="['/login']" class="nav-content-btn" *ngIf="!jwt.loggedIn">Login</button>
+
+        <div class="Logout" *ngIf="jwt.loggedIn">
+          <p>Hello {{jwt.getCurretnUser.username}}</p>
+          <button routerLink="//" (click)="jwt.logout()">Logout</button>
+        </div>
+      </div>
     </div>
-    <div class="logout-div"></div>
   </div>
 
   <div class="bottom-div">
     <div class="left-div">
-      <div class="whats-happening-div">
+      <div class="whats-happening-div" *ngIf="jwt.loggedIn">
         <app-postkweet></app-postkweet>
       </div>
       <div class="content-div">
-          <a [routerLink]="['']" class="nav-content-btn">
+          <a [routerLink]="['']" *ngIf="jwt.loggedIn" class="nav-content-btn">
             TimeLine
           </a>
         <div class="router-outlet">
