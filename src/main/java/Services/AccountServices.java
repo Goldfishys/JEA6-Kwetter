@@ -1,17 +1,19 @@
 package Services;
 
 import DAL.Database;
-import DAL.Implementations.Database.AccountRepo;
+import DAL.Interfaces.IAccount;
 import models.Account;
 import models.JwtToken;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 
+@RequestScoped
 public class AccountServices {
 
     @Inject
-    private AccountRepo accountRepo;
+    private IAccount accountRepo;
 
     //region constructor
     public AccountServices() {
@@ -36,10 +38,10 @@ public class AccountServices {
     public JwtToken login(String username, String password) {
         if (username != null && password != null && username != "" && password != "") {
             Account acc = accountRepo.login(username, password);
-            if(acc != null){
+            if (acc != null) {
                 System.out.println("found the account, now creating token");
                 JwtToken token = new JwtToken(acc, username);
-                if(token.complete()) return token;
+                if (token.complete()) return token;
             }
             System.out.println("couldnt find username/password combi");
         }

@@ -5,41 +5,27 @@ import models.Profile;
 import models.User;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
+@Default
 @RequestScoped
 public class ProfileRepo implements IProfile {
 
-    EntityManagerFactory emf;
+    @PersistenceContext
+    private EntityManager em;
 
     public ProfileRepo() {
-        emf = Persistence.createEntityManagerFactory("KwetterHibernatePersistence");
     }
 
     public Profile GetProfile(int userid) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(User.class, userid).getProfile();
-        } finally {
-            em.close();
-        }
+        return em.find(User.class, userid).getProfile();
     }
 
     public Profile UpdateProfile(int userid, Profile profile) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            Profile profile1 = em.find(User.class, userid).getProfile();
-
-            em.getTransaction().begin();
-            profile1.UpdateProfile(profile);
-            em.getTransaction().commit();
-
-            return profile1;
-        }
-        finally {
-            em.close();
-        }
+        Profile profile1 = em.find(User.class, userid).getProfile();
+        profile1.UpdateProfile(profile);
+        return profile1;
     }
 }

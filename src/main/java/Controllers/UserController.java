@@ -3,9 +3,11 @@ package Controllers;
 import Services.UserServices;
 import models.User;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
 
+@Stateless
 public class UserController {
 
     @Inject

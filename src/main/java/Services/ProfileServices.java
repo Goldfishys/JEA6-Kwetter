@@ -3,10 +3,10 @@ package Services;
 import DAL.Interfaces.IProfile;
 import models.Profile;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
-@Named("ProfileServices")
+@RequestScoped
 public class ProfileServices {
 
     @Inject

@@ -1,7 +1,7 @@
 package Services;
 
-import DAL.Implementations.Database.KweetRepo;
-import DAL.Implementations.Database.UserRepo;
+import DAL.Interfaces.IKweet;
+import DAL.Interfaces.IUser;
 import models.Kweet;
 import models.User;
 
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 public class KweetServices {
 
     @Inject
-    private KweetRepo kweetRepo;
+    private IKweet kweetRepo;
 
     @Inject
-    private UserRepo userRepo;
+    private IUser userRepo;
 
     //region constructors
     public KweetServices() {

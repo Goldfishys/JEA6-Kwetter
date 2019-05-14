@@ -4,9 +4,11 @@ import Services.AccountServices;
 import models.Account;
 import models.JwtToken;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
 
+@Stateless
 public class AccountController {
 
     @Inject

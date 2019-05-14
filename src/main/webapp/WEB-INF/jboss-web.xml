@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web>
+    <security-domain>kwetter</security-domain>
+    <use-jboss-authorization>false</use-jboss-authorization>
+</jboss-web>

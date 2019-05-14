@@ -1,9 +1,8 @@
 package models;
 
-import DAL.Database;
-
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -17,11 +16,14 @@ public class Account {
     @Column(name = "Password")
     private String password;
 
-    @Transient
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     private User user;
 
-    @Transient
-    private ArrayList<Permission> permissions;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="Account_Role",
+            joinColumns=@JoinColumn(name="IDaccount"),
+            inverseJoinColumns = @JoinColumn(name = "IDrole"))
+    private List<Role> roles;
 
     //region get/set
     public int getID() {
@@ -40,8 +42,12 @@ public class Account {
         this.user = user;
     }
 
-    public ArrayList<Permission> getPermissions() {
-        return permissions;
+    public List<Role> getRoles() {
+        return  roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getPassword() {
@@ -56,40 +62,36 @@ public class Account {
 
     //region constructors
     public Account() {
+        roles = new ArrayList<>();
     }
 
     public Account(String name, String password){
         this.user = new User(name, this);
         this.password = password;
-        permissions = new ArrayList<>();
+        roles = new ArrayList<>();
     }
 
     public Account(int ID){
         this.ID = ID;
-        permissions = new ArrayList<>();
+        roles = new ArrayList<>();
     }
     //endregion
 
     //region methods
-    public void JoinGroup(Group group) {
-        group.AddAccount(this);
-    }
-
-    public void LeaveGroup(Group group) {
-        group.RemoveAccount(this);
-    }
-
-    public void LoadUser() {
-        user = Database.getInstance().userRepo.GetUser(this.ID);
-    }
-
-    public void LoadGroups(){
-        permissions = Database.getInstance().groupRepo.GetPermissionsForAccount(this.ID);
-    }
-
     @Override
     public String toString(){
         return "ID: " + this.getID() + "User: " + this.getUser();
+    }
+
+    public void AssignNewRole(Role role) {
+        if(role != null){
+            System.out.println("Assigned new role succesfully");
+            this.roles.clear();
+            this.roles.add(role);
+        }else{
+            System.out.println("Couldn't find the role");
+        }
+
     }
     //endregion
 }

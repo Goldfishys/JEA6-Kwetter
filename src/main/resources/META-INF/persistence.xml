@@ -9,16 +9,15 @@
         <class>models.Kweet</class>
         <class>models.User</class>
         <class>models.Profile</class>
+        <class>models.Role</class>
+        <class>models.Permission</class>
 
         <properties>
-            <!--<property name="hibernate.connection.url" value="jdbc:mysql://remotemysql.com:3306/IEZ6hf4RcZ"/>-->
-            <!--<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>-->
-            <!--<property name="hibernate.connection.username" value="IEZ6hf4RcZ"/>-->
-            <!--<property name="hibernate.connection.password" value="ccMBfAC6Gc"/>-->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <!--<property name="hibernate.show_sql" value = "true" />-->
+            <property name="hibernate.show_sql" value = "true" />
             <property name="log4j.logger.org.hibernat" value="error"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
         </properties>
 
     </persistence-unit>

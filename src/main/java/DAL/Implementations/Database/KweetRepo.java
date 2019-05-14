@@ -4,6 +4,7 @@ import DAL.Interfaces.IKweet;
 import models.Kweet;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+@Default
 @RequestScoped
 public class KweetRepo implements IKweet, Serializable {
 

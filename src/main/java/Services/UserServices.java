@@ -1,16 +1,18 @@
 package Services;
 
-import DAL.Implementations.Database.UserRepo;
+import DAL.Interfaces.IUser;
 import models.Account;
 import models.User;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 
+@RequestScoped
 public class UserServices {
 
     @Inject
-    UserRepo userRepo;
+    IUser userRepo;
 
     public User GetUser(int userID) {
         return userRepo.GetUser(userID);

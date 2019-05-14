@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+
+<head>
+    <title>Admin Console</title>
+</head>
+
+<body>
+<ui:composition template="./WEB-INF/Template.xhtml">
+    <ui:define name="content">
+        <div class="user-output-container">
+            <div class="User-Table-Column-Names">
+                <h3>Username</h3>
+                <h3>Roles</h3>
+            </div>
+            <ui:repeat value="#{userBean.accounts}" var="account">
+                <div class="user">
+                    <div class="user-row-item">
+                        <p>#{account.user.username}</p>
+                    </div>
+                    <div class="user-row-item">
+                        <ui:repeat value="#{account.roles}" var="role">
+                            <p class="user-row-item">#{role.role}</p>
+                        </ui:repeat>
+                    </div>
+                    <div class="user-row-item">
+                        <h:form class="user-row-item">
+                            <h:selectOneRadio class="user-row-item" value="#{userBean.newRole}">
+                                <f:selectItems class="user-row-item" value="#{userBean.roles}" var="role"
+                                               itemLabel="#{role.role}" itemValue="#{role.role}" />
+                            </h:selectOneRadio>
+                            <h:commandButton class="user-row-item" value="Assign Role" type="submit" action="#{userBean.EditRoles(account.ID)}" />
+                        </h:form>
+                    </div>
+                </div>
+            </ui:repeat>
+        </div>
+    </ui:define>
+</ui:composition>
+</body>
+</html>
