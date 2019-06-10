@@ -1,7 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {RestService} from "../rest.service";
 import {JwtService} from "../jwt.service";
-import {Router} from "@angular/router";
+import {WebsocketService} from "../websocket.service";
+
+// const SERVER_URL = "ws://localhost:8080/javaee8-essentials-archetype/websocket";
 
 @Component({
   selector: 'app-startpagina',
@@ -10,14 +12,9 @@ import {Router} from "@angular/router";
 })
 export class StartpaginaComponent implements OnInit {
 
-  constructor(public rest: RestService, public jwt: JwtService, private router: Router) {
-  }
+  constructor(public rest: RestService, public jwt: JwtService) {}
 
   ngOnInit() {
-  }
-
-  logout(){
-    this.jwt.logout();
 
   }
 }

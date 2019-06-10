@@ -4,13 +4,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.naming.InitialContext;
-import javax.security.auth.Subject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.security.acl.Group;
-import java.util.Enumeration;
-import java.util.Iterator;
 
 @Named
 @ApplicationScoped
@@ -58,7 +53,7 @@ public class LoginBean {
             System.out.println("Admin: " + request.isUserInRole("Admin"));
             System.out.println("Moderator: " + request.isUserInRole("Moderator"));
             System.out.println("User: " + request.isUserInRole("User"));
-            printRoles();
+            //printRoles();
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Login failed."));
             return "Error.html";
@@ -66,25 +61,25 @@ public class LoginBean {
         return "Kweets.xhtml";
     }
 
-    private void printRoles() {
-        try {
-            InitialContext ic = new InitialContext();
-            Subject subject = (Subject) ic.lookup("java:comp/env/security/subject");
-// To list the Principals contained in the Subject...
-            Iterator principals;
-// To get the roles (the instance of java.security.acl.Group in the list of Principals)
-            principals = subject.getPrincipals(java.security.acl.Group.class).iterator();
-            if (principals.hasNext()) {
-                Group roles = (Group) principals.next();
-                Enumeration roleEnum = roles.members();
-                while (roleEnum.hasMoreElements()) {
-                    System.out.println("Role: " + roleEnum.nextElement());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void printRoles() {
+//        try {
+//            InitialContext ic = new InitialContext();
+//            Subject subject = (Subject) ic.lookup("java:comp/env/security/subject");
+//// To list the Principals contained in the Subject...
+//            Iterator principals;
+//// To get the roles (the instance of java.security.acl.Group in the list of Principals)
+//            principals = subject.getPrincipals(java.security.acl.Group.class).iterator();
+//            if (principals.hasNext()) {
+//                Group roles = (Group) principals.next();
+//                Enumeration roleEnum = roles.members();
+//                while (roleEnum.hasMoreElements()) {
+//                    System.out.println("Role: " + roleEnum.nextElement());
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void Logout() {
         FacesContext context = FacesContext.getCurrentInstance();

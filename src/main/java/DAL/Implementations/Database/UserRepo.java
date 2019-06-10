@@ -23,7 +23,9 @@ public class UserRepo implements IUser {
 
     @Override
     public User GetUser(int ID) {
-        return em.find(User.class, ID);
+        User user = em.find(User.class, ID);
+        System.out.println(user.getUsername());
+        return user;
     }
 
     @Override

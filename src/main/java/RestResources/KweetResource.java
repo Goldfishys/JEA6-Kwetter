@@ -6,6 +6,9 @@ import models.Kweet;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Link;
+import javax.ws.rs.core.UriInfo;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -66,8 +69,17 @@ public class KweetResource {
     @JWTTokenNeeded
     @Path("/timeline/{accountID}")
     @Produces("application/json")
-    public TreeSet<Kweet> GetTimeLine(@PathParam("accountID") int accountID){
-        return kc.GetTimeLine(accountID);
+    public TreeSet<Kweet> GetTimeLine(@PathParam("accountID") int accountID, @Context UriInfo uriInfo){
+        TreeSet<Kweet> kweets = kc.GetTimeLine(accountID);
+        kweets.stream().forEach(p ->{
+            Link self = Link.fromUriBuilder(uriInfo.getAbsolutePathBuilder().path(String.valueOf(p.getID())))
+                    .rel("self").build();
+            p.get_links().add(self);
+            Link delete = Link.fromUriBuilder(uriInfo.getAbsolutePathBuilder().path(String.valueOf(p.getID())))
+                    .rel("delete").build();
+            p.get_links().add(delete);
+        });
+        return kweets;
     }
 
     @GET

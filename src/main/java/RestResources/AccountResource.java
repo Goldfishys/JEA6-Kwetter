@@ -7,6 +7,7 @@ import models.JwtToken;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("")
 public class AccountResource {
@@ -24,7 +25,7 @@ public class AccountResource {
     @GET
     @Path("/accounts")
     @Produces("application/json")
-    public ArrayList<Account> GetAccounts(){
+    public List<Account> GetAccounts(){
         return ac.GetAccounts();
     }
 

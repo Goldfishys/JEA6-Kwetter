@@ -14,7 +14,7 @@ export class JwtService {
   endpoint = 'http://localhost:8080/javaee8-essentials-archetype/kwetter';
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     })
   };
   constructor(private httpClient: HttpClient, private myRoute: Router) { }
@@ -27,8 +27,6 @@ export class JwtService {
     let currentUser:any = {};
     currentUser.userid = localStorage.getItem("UserID");
     currentUser.username = localStorage.getItem("Username");
-    console.log("logging currentuser");
-    console.log(currentUser);
     return currentUser;
   }
 

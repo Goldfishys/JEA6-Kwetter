@@ -37,8 +37,10 @@ public class KweetServices {
 
     public Kweet PostKweet(Kweet kweet) {
         if(kweet.IsValid()){
+            System.out.println("Kweet is valid");
             return kweetRepo.PostKweet(kweet);
         }
+        System.out.println("Kweet is invalid");
         return null;
     }
 

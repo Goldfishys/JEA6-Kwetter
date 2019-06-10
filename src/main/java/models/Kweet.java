@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.*;
+import javax.ws.rs.core.Link;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,6 @@ public class Kweet implements Comparable<Kweet>{
     @Column
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @JsonSerialize(using = JsonDateSerializer.class)
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime created;
 
     @Transient
@@ -42,6 +42,9 @@ public class Kweet implements Comparable<Kweet>{
     protected void onCreate() {
         setCreated(LocalDateTime.now());
     }
+
+    @Transient
+    private List<Link> _links;
 
     //region get/set
     public int getID() {
@@ -86,33 +89,27 @@ public class Kweet implements Comparable<Kweet>{
 
     public LocalDateTime getCreated() {
         return created;
-//        if(created != null) {
-//            created = created.replace('T', ' ');
-//            String pattern = "yyyy-MM-dd HH:mm:ss";
-//            if (created.length() > 19) {
-//                pattern += ".";
-//                for (int i = created.length() - 20; i > 0; i--) {
-//                    pattern += "S";
-//                }
-//            }
-//            LocalDateTime ldt = LocalDateTime.parse(created, DateTimeFormatter.ofPattern(pattern));
-//            return ldt;
-//        }
-//        else{
-//            return null;
-//        }
     }
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
-        //this.created = created.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     }
+
+    public List<Link> get_links() {
+        return _links;
+    }
+
+    public void set_links(List<Link> _links) {
+        this._links = _links;
+    }
+
     //endregion
 
     //region Constructors
     public Kweet() {
         this.activity = new ArrayList<>();
         this.mentions = new ArrayList<>();
+        _links = new ArrayList<>();
     }
 
     public Kweet(String text, int author) {
@@ -120,12 +117,14 @@ public class Kweet implements Comparable<Kweet>{
         this.author = author;
         this.activity = new ArrayList<>();
         this.mentions = new ArrayList<>();
+        _links = new ArrayList<>();
     }
 
     public Kweet(String text, int author, List<Activity> activity, ArrayList<User> mentions) {
         this.ID = 0;
         this.text = text;
         this.author = author;
+        _links = new ArrayList<>();
 
         if (activity != null) {
             this.activity = activity;
@@ -145,6 +144,7 @@ public class Kweet implements Comparable<Kweet>{
         this.text = text;
         this.author = author;
         setCreated(date);
+        _links = new ArrayList<>();
 
         if (activity != null) {
             this.activity = activity;
@@ -184,16 +184,6 @@ public class Kweet implements Comparable<Kweet>{
             this.activity = kweet.activity;
         }
     }
-
-//    public void DeleteKweet(int deleterAccountID) {
-//        if (this.getAuthor().getAccount().getID() == deleterAccountID) {
-//            Database.getInstance().kweetRepo.RemoveKweet(this);
-//        } else {
-//            if (Database.getInstance().groupRepo.HasPermission(deleterAccountID, Permission.DeleteAllKweets)) {
-//                Database.getInstance().kweetRepo.RemoveKweet(this);
-//            }
-//        }
-//    }
 
     @Override
     public boolean equals(Object obj) {

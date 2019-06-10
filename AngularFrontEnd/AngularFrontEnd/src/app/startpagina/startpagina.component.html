@@ -14,7 +14,6 @@
       </div>
       <div class="top-right-div">
         <button [routerLink]="['/login']" class="nav-content-btn" *ngIf="!jwt.loggedIn">Login</button>
-
         <div class="Logout" *ngIf="jwt.loggedIn">
           <p>Hello {{jwt.getCurretnUser.username}}</p>
           <button routerLink="//" (click)="jwt.logout()">Logout</button>

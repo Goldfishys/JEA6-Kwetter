@@ -9,7 +9,8 @@ import javax.ws.rs.core.Application;
  *
  * @author airhacks.com
  */
-@ApplicationPath("/kwetter")
+
+@ApplicationPath("kwetter")
 public class JAXRSConfiguration extends Application {
 
 }

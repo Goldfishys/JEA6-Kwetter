@@ -46,7 +46,7 @@ public class AccountRepo implements IAccount, Serializable {
     }
 
     public Account login(String username, String password) {
-        Query query = em.createQuery("select a from Account a, User u where u.username = :username and a.password = :password")
+        Query query = em.createQuery("select a from Account a left join User u on a.ID = u.account.id where u.username = :username and a.password = :password")
                 .setParameter("username", username)
                 .setParameter("password", password);
         return (Account) query.getSingleResult();

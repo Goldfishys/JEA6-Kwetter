@@ -16,6 +16,7 @@ import {LoginComponent} from './login/login.component';
 import {JwtModule} from '@auth0/angular-jwt';
 import {JwtGuard} from "./JwtGuard";
 import {JwtService} from "./jwt.service";
+import {WebsocketService} from "./websocket.service";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {JwtService} from "./jwt.service";
   ],
   providers: [
     JwtService,
+    WebsocketService,
     JwtGuard
   ],
   bootstrap: [AppComponent]

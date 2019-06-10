@@ -1,7 +1,6 @@
 package models;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,11 +29,11 @@ public class Role {
         this.role = role;
     }
 
-    public ArrayList<Permission> getPermissions() {
-        return (ArrayList<Permission>) permissions;
+    public List<Permission> getPermissions() {
+        return  permissions;
     }
 
-    public void setPermissions(ArrayList<Permission> permissions) {
+    public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
 

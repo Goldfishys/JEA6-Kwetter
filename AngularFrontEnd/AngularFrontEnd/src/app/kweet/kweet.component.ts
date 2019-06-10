@@ -10,11 +10,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class KweetComponent implements OnInit {
 
   @Input() kweetid: number;
-  kweet:any;
+  private kweet:any;
 
   constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    console.log(this.kweetid);
     this.getKweet();
   }
 
@@ -22,15 +23,16 @@ export class KweetComponent implements OnInit {
     console.log("starting to get kweet")
     this.rest.getKweet(this.kweetid).subscribe((data: any) => {
       this.kweet = data;
-      this.getUsername();
+      // this.setUsername();
       console.log(this.kweet);
     });
   }
 
-  public getUsername(): any{
+  public setUsername() {
     this.rest.getUser(this.kweet.author).subscribe((data: any) => {
+      console.log(data);
       this.kweet.username = data.username;
-      console.log(data.username)
+      console.log(data.username);
     })
   }
 }

@@ -21,6 +21,7 @@ public class JwtTokenNeededFilter implements ContainerRequestFilter {
         System.out.println("AUTH FILTER");
         System.out.println("AUTH FILTER");
         System.out.println("AUTH FILTER");
+
         // Get the HTTP Authorization header from the request
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 

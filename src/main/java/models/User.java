@@ -14,7 +14,7 @@ public class User {
     @Column(name = "IDuser")
     private int id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_IDaccount")
     private Account account;
 
