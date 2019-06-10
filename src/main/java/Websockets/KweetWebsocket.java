@@ -42,6 +42,7 @@ public class KweetWebsocket {
 
     @OnClose
     public void close(Session session) {
+        user_Session.remove(session);
         System.out.println("#OnClose: " + session.toString());
     }
 

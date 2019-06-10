@@ -56,15 +56,12 @@
         <!--&lt;!&ndash;</auth-constraint>&ndash;&gt;-->
     <!--</security-constraint>-->
 
-    <!-- Login Configuration-->
-    <!--<login-config>-->
-        <!--<auth-method>FORM</auth-method>-->
-        <!--<form-login-config>-->
-            <!--<form-login-page>/Login.xhtml</form-login-page>-->
-            <!--<form-error-page>/Error.html</form-error-page>-->
-        <!--</form-login-config>-->
-    <!--</login-config>-->
+     <!--Login Configuration-->
     <login-config>
-        <auth-method>BASIC</auth-method>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/Login.xhtml</form-login-page>
+            <form-error-page>/Error.html</form-error-page>
+        </form-login-config>
     </login-config>
 </web-app>
