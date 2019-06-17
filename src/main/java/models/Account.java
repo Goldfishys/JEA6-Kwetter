@@ -1,5 +1,10 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +21,12 @@ public class Account {
     @Column(name = "Password")
     private String password;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "ID")
+    @ManyToMany()
     @JoinTable(name="Account_Role",
             joinColumns=@JoinColumn(name="IDaccount"),
             inverseJoinColumns = @JoinColumn(name = "IDrole"))

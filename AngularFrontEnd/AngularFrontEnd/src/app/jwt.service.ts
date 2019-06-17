@@ -41,7 +41,7 @@ export class JwtService {
           localStorage.setItem('access_token', token.token);
           localStorage.setItem('UserID', token.userid);
           localStorage.setItem('Username', token.username);
-          this.myRoute.navigate(["home"]);
+          this.myRoute.navigate(["/"]);
         }
       }));
   }

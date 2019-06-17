@@ -1,5 +1,9 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,10 +14,11 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDuser")
     private int id;
 
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "User_IDaccount")
     private Account account;
@@ -24,16 +29,18 @@ public class User {
     @Transient
     private ArrayList<Kweet> kweets;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="Followers",
-            joinColumns=@JoinColumn(name="IDAccountToFollow"),
-            inverseJoinColumns=@JoinColumn(name="IDuserFollower"))
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @OneToMany()
+    @JoinTable(name = "Followers",
+            joinColumns = @JoinColumn(name = "IDAccountToFollow"),
+            inverseJoinColumns = @JoinColumn(name = "IDuserFollower"))
     private List<Account> followers;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="Followers",
-            joinColumns=@JoinColumn(name="IDuserFollower"),
-            inverseJoinColumns=@JoinColumn(name="IDAccountToFollow"))
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @OneToMany()
+    @JoinTable(name = "Followers",
+            joinColumns = @JoinColumn(name = "IDuserFollower"),
+            inverseJoinColumns = @JoinColumn(name = "IDAccountToFollow"))
     private List<Account> following;
 
     @Embedded
@@ -137,7 +144,7 @@ public class User {
 //    }
 
     public void AddFollower(Account follower) {
-        for(Account acc : followers){
+        for (Account acc : followers) {
             System.out.println(acc.toString());
         }
         followers.add(follower);
@@ -150,7 +157,7 @@ public class User {
 //    }
 
     public void RemoveFollower(Account followerToRemove) {
-        for (Iterator<Account> iterator = this.getFollowers().iterator(); iterator.hasNext();) {
+        for (Iterator<Account> iterator = this.getFollowers().iterator(); iterator.hasNext(); ) {
             Account acc = iterator.next();
             if (acc.getID() == followerToRemove.getID()) {
                 iterator.remove();
@@ -165,22 +172,22 @@ public class User {
 //    }
 
     @Override
-    public String toString(){
-        return "ID: " + this.id + " - Username: " + this.username +" - " + this.profile.toString() + " followers: " + followers.size() + " following: "+ following.size();
+    public String toString() {
+        return "ID: " + this.id + " - Username: " + this.username + " - " + this.profile.toString() + " followers: " + followers.size() + " following: " + following.size();
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(obj instanceof User){
-            if(obj == this)return true;
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            if (obj == this) return true;
         }
         return false;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         int code = 0;
-        code += this.getId() *33;
+        code += this.getId() * 33;
         return code;
     }
 

@@ -68,8 +68,15 @@ public class KweetResourceTest {
     @Test
     @InSequence(1)
     public void PostKweetWhiteBox() {
+//        for(int i =1; i <11; i++){
+////            for(int x =1; x <11; x++){
+////                Kweet kweet = new Kweet("Kweet" + x, i, null,null);
+////                kc.PostKweet(kweet);
+////            }
+////        }
+
         //post new kweet
-        String text = "testing new JPA";
+        String text = "Test Kweet";
         Kweet kweet = new Kweet(text, 1, null, null);
         Kweet returnKweet = kc.PostKweet(kweet);
         Assert.assertEquals(kweet.getText(), returnKweet.getText());

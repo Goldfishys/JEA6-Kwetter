@@ -17,7 +17,8 @@
             <property name="hibernate.show_sql" value = "true" />
             <property name="log4j.logger.org.hibernat" value="error"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
+            <!--<property name="hibernate.enable_lazy_load_no_trans" value="true"/>-->
         </properties>
 
     </persistence-unit>

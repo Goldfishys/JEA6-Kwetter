@@ -13,6 +13,7 @@ export class SearchkweetsComponent implements OnInit {
 
   constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) {
     route.queryParams.subscribe(params => {
+      console.log("Searchterm");
       console.log(params.searchterm);
       this.searchKweets(params.searchterm);
     })

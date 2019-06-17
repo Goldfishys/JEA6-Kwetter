@@ -1,15 +1,16 @@
 package ManagedBeans;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 @Named
-@ApplicationScoped
-public class LoginBean {
+@ViewScoped
+public class LoginBean implements Serializable {
 
     //region properties
     private String username;

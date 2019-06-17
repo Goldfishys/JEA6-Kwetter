@@ -23,7 +23,7 @@ export class KweetComponent implements OnInit {
     console.log("starting to get kweet")
     this.rest.getKweet(this.kweetid).subscribe((data: any) => {
       this.kweet = data;
-      // this.setUsername();
+      this.setUsername();
       console.log(this.kweet);
     });
   }

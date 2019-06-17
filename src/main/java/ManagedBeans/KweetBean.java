@@ -3,14 +3,15 @@ package ManagedBeans;
 import Controllers.KweetController;
 import models.Kweet;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Named
-@RequestScoped
-public class KweetBean {
+@ViewScoped
+public class KweetBean implements Serializable {
 
     @Inject
     private KweetController kc;

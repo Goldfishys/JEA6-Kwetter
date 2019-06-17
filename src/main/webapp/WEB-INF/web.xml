@@ -23,17 +23,14 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.jsf</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.faces</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
+
+    <!--<context-param>-->
+        <!--<param-name>javax.faces.STATE_SAVING_METHOD</param-name>-->
+        <!--<param-value>client</param-value>-->
+    <!--</context-param>-->
 
     <!-- Security Roles -->
     <security-role>
@@ -42,8 +39,6 @@
     <security-role>
         <role-name>Moderator</role-name>
     </security-role>
-
-
 
     <!-- Security Constraints -->
     <!--<security-constraint>-->
@@ -57,11 +52,11 @@
     <!--</security-constraint>-->
 
      <!--Login Configuration-->
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <form-login-config>
-            <form-login-page>/Login.xhtml</form-login-page>
-            <form-error-page>/Error.html</form-error-page>
-        </form-login-config>
-    </login-config>
+    <!--<login-config>-->
+        <!--<auth-method>FORM</auth-method>-->
+        <!--<form-login-config>-->
+            <!--<form-login-page>/Login.xhtml</form-login-page>-->
+            <!--<form-error-page>/Error.html</form-error-page>-->
+        <!--</form-login-config>-->
+    <!--</login-config>-->
 </web-app>
