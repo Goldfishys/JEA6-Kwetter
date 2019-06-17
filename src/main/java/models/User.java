@@ -1,8 +1,6 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,14 +27,12 @@ public class User {
     @Transient
     private ArrayList<Kweet> kweets;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @OneToMany()
     @JoinTable(name = "Followers",
             joinColumns = @JoinColumn(name = "IDAccountToFollow"),
             inverseJoinColumns = @JoinColumn(name = "IDuserFollower"))
     private List<Account> followers;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @OneToMany()
     @JoinTable(name = "Followers",
             joinColumns = @JoinColumn(name = "IDuserFollower"),

@@ -2,7 +2,9 @@ package RestResources;
 
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import jdk.nashorn.internal.parser.Token;
 import models.Account;
+import models.JwtToken;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -55,6 +57,8 @@ public class AccountResourceTest {
     @Test
     @RunAsClient
     public void getAccountBlackBox() {
+
+        //happy path met account dat bestaat
         int accid = 1;
         String location = "kwetter/account/" + accid;
         Response response = given()
@@ -64,6 +68,16 @@ public class AccountResourceTest {
 
         Account account = response.getBody().as(Account.class);
         Assert.assertEquals(accid, account.getID());
+
+        //unhappy path met account dat niet bestaat
+        accid = 1000;
+        location = "kwetter/account/" + accid;
+        response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(basePath + location);
+        System.out.println(response.getBody());
+        Assert.assertEquals(204, response.getStatusCode());
     }
 
     @Test
@@ -83,11 +97,11 @@ public class AccountResourceTest {
     @RunAsClient
     public void LoginBlackBox() {
         String location = "kwetter/login";
-        String username = "Henk";
-        String password = "Henk";
+
+        //Als eerste wordt er een poging gedaan om met een niet bestaande username en wachtwoord in te loggen
         ArrayList<String> params = new ArrayList<>();
-        params.add(username);
-        params.add(password);
+        params.add("Henk");
+        params.add("Henk");
 
         System.out.println("Base Path: " + basePath);
         Response response = given()
@@ -95,8 +109,35 @@ public class AccountResourceTest {
                 .body(params)
                 .when()
                 .post(basePath + location);
+        int returnCode = response.getStatusCode();
+        Assert.assertEquals(204, returnCode);
 
-        String token = response.getBody().as(String.class);
-        System.out.println(token);
+        //Vervolgens wordt de juiste username met verkeerde wachtwoord ingevuld
+        params = new ArrayList<>();
+        params.add("User1");
+        params.add("Henk");
+
+        System.out.println("Base Path: " + basePath);
+        response = given()
+                .contentType(ContentType.JSON)
+                .body(params)
+                .when()
+                .post(basePath + location);
+        returnCode = response.getStatusCode();
+        Assert.assertEquals(204, returnCode);
+
+        //De laatste test, test een juiste username met een juist wachtwoord
+        params = new ArrayList<>();
+        params.add("User1");
+        params.add("User1");
+
+        System.out.println("Base Path: " + basePath);
+        response = given()
+                .contentType(ContentType.JSON)
+                .body(params)
+                .when()
+                .post(basePath + location);
+        String token = response.getBody().jsonPath().get("token");
+        Assert.assertTrue(new JwtToken(token).VerifyToken());
     }
 }

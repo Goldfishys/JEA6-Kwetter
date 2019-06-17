@@ -35,9 +35,12 @@ public class AccountResource {
     @Produces("application/json")
     public JwtToken Login(ArrayList<String> args){
         System.out.println("Size: " + args.size());
-        System.out.println(args.get(0));
-        System.out.println(args.get(1));
-        return ac.login(args.get(0), args.get(1));
+        if(args.size() > 1) {
+            return ac.login(args.get(0), args.get(1));
+        }
+        else {
+            return null;
+        }
     }
 
 }

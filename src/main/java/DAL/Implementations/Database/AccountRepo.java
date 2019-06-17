@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Default
 @RequestScoped
@@ -34,21 +35,19 @@ public class AccountRepo implements IAccount, Serializable {
     }
 
     @Override
-    public ArrayList<Account> GetAccounts() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-
-        CriteriaQuery<Account> cq = cb.createQuery(Account.class);
-        Root<Account> rootEntry = cq.from(Account.class);
-        CriteriaQuery<Account> all = cq.select(rootEntry);
-
-        TypedQuery<Account> allQuery = em.createQuery(all);
-        return (ArrayList<Account>) allQuery.getResultList();
+    public List<Account> GetAccounts() {
+        return em.createQuery("select a from Account a", Account.class)
+                .getResultList();
     }
 
+    @Override
     public Account login(String username, String password) {
-        Query query = em.createQuery("select a from Account a left join User u on a.ID = u.account.id where u.username = :username and a.password = :password")
+        return em.createQuery("select a from Account a left join User u on a.ID = u.account.id where u.username = :username and a.password = :password", Account.class)
                 .setParameter("username", username)
-                .setParameter("password", password);
-        return (Account) query.getSingleResult();
+                .setParameter("password", password)
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 }

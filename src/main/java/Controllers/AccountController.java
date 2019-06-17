@@ -7,6 +7,7 @@ import models.JwtToken;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class AccountController {
@@ -18,12 +19,11 @@ public class AccountController {
         return as.GetAccount(accountID);
     }
 
-    public ArrayList<Account> GetAccounts() {
+    public List<Account> GetAccounts() {
         return as.GetAccounts();
     }
 
     public JwtToken login(String username, String password) {
-        System.out.println("username: "+ username + " password: " + password);
         return as.login(username, password);
     }
 }

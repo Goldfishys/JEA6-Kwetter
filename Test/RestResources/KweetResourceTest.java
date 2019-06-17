@@ -69,20 +69,27 @@ public class KweetResourceTest {
     @InSequence(1)
     public void PostKweetWhiteBox() {
 //        for(int i =1; i <11; i++){
-////            for(int x =1; x <11; x++){
-////                Kweet kweet = new Kweet("Kweet" + x, i, null,null);
-////                kc.PostKweet(kweet);
-////            }
-////        }
+//            for(int x =1; x <11; x++){
+//                Kweet kweet = new Kweet("Kweet" + x, i, null,null);
+//                kc.PostKweet(kweet);
+//            }
+//        }
 
-        //post new kweet
-        String text = "Test Kweet";
-        Kweet kweet = new Kweet(text, 1, null, null);
+        //post new kweet happy path
+        Kweet kweet = new Kweet("Test Kweet", 1, null, null);
         Kweet returnKweet = kc.PostKweet(kweet);
         Assert.assertEquals(kweet.getText(), returnKweet.getText());
-        System.out.println("ID: " + kweet.getID());
-        kweetID = kweet.getID();
         Assert.assertTrue(returnKweet.getID() > 0);
+
+        //post a new kweet without text
+        kweet = new Kweet("", 1, null, null);
+        returnKweet = kc.PostKweet(kweet);
+        Assert.assertFalse(returnKweet.getID() > 0);
+
+        //post a new kweet with a null value as text
+        kweet = new Kweet(null, 1, null, null);
+        returnKweet = kc.PostKweet(kweet);
+        Assert.assertFalse(returnKweet.getID() > 0);
     }
 
     @Test

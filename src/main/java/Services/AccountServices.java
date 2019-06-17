@@ -8,6 +8,7 @@ import models.JwtToken;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 
 @RequestScoped
 public class AccountServices {
@@ -31,7 +32,7 @@ public class AccountServices {
         return accountRepo.GetAccountByID(accountID);
     }
 
-    public ArrayList<Account> GetAccounts() {
+    public List<Account> GetAccounts() {
         return accountRepo.GetAccounts();
     }
 
@@ -39,11 +40,9 @@ public class AccountServices {
         if (username != null && password != null && username != "" && password != "") {
             Account acc = accountRepo.login(username, password);
             if (acc != null) {
-                System.out.println("found the account, now creating token");
-                JwtToken token = new JwtToken(acc, username);
-                if (token.complete()) return token;
+                return new JwtToken(acc, username);
             }
-            System.out.println("couldnt find username/password combi");
+            return null;
         }
         return null;
     }

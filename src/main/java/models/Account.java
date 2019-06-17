@@ -25,8 +25,7 @@ public class Account {
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
     private User user;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "ID")
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Account_Role",
             joinColumns=@JoinColumn(name="IDaccount"),
             inverseJoinColumns = @JoinColumn(name = "IDrole"))

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Named
 @ViewScoped
@@ -19,7 +20,7 @@ public class UserBean implements Serializable {
     AccountController ac;
     RoleController rc;
     private ArrayList<Role> roles;
-    private ArrayList<Account> accounts;
+    private List<Account> accounts;
     private String newRole;
     //endregion
 
@@ -41,11 +42,11 @@ public class UserBean implements Serializable {
         this.newRole = newRole;
     }
 
-    public ArrayList<Account> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(ArrayList<Account> accounts) {
+    public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
     //endregion

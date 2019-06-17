@@ -5,7 +5,7 @@ import DAL.Interfaces.IAccount;
 import models.Account;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AccountRepoMock implements IAccount {
     private Database database;
@@ -32,7 +32,7 @@ public class AccountRepoMock implements IAccount {
     }
 
     @Override
-    public ArrayList<Account> GetAccounts() {
+    public List<Account> GetAccounts() {
         throw new NotImplementedException();
     }
 

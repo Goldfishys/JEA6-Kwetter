@@ -28,7 +28,7 @@ public class JwtTokenNeededFilter implements ContainerRequestFilter {
         // Extract the token from the HTTP Authorization header
         String token = authorizationHeader.substring("Bearer".length()).trim();
         JwtToken jwtToken = new JwtToken(token);
-        if(jwtToken.VefifyToken()){
+        if(jwtToken.VerifyToken()){
             System.out.println("valid token: " + token);
         }else{
             System.out.println("Invaldig token: " + token);
