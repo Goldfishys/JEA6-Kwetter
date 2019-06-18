@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import models.DTOmodels.KweetDTO;
 
 import javax.persistence.*;
 import javax.ws.rs.core.Link;
@@ -14,10 +15,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "Kweet")
-public class Kweet implements Comparable<Kweet>{
+public class Kweet implements Comparable<Kweet> {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDkweet")
     @JsonProperty("id")
     private int ID;
@@ -36,7 +37,7 @@ public class Kweet implements Comparable<Kweet>{
     @Transient
     private List<Activity> activity;
     @Transient
-    private ArrayList<User> mentions;
+    private List<User> mentions;
 
     @PrePersist
     protected void onCreate() {
@@ -79,7 +80,7 @@ public class Kweet implements Comparable<Kweet>{
         this.activity = activity;
     }
 
-    public ArrayList<User> getMentions() {
+    public List<User> getMentions() {
         return mentions;
     }
 
@@ -112,6 +113,13 @@ public class Kweet implements Comparable<Kweet>{
         _links = new ArrayList<>();
     }
 
+    public Kweet(KweetDTO kweetDTO) {
+        this.ID = kweetDTO.getID();
+        this.text = kweetDTO.getText();
+        this.author = kweetDTO.getAuthorID();
+        this.created = kweetDTO.getCreated();
+    }
+
     public Kweet(String text, int author) {
         this.text = text;
         this.author = author;
@@ -120,7 +128,7 @@ public class Kweet implements Comparable<Kweet>{
         _links = new ArrayList<>();
     }
 
-    public Kweet(String text, int author, List<Activity> activity, ArrayList<User> mentions) {
+    public Kweet(String text, int author, List<Activity> activity, List<User> mentions) {
         this.ID = 0;
         this.text = text;
         this.author = author;
@@ -139,7 +147,7 @@ public class Kweet implements Comparable<Kweet>{
         }
     }
 
-    public Kweet(int ID, String text, int author, LocalDateTime date, List<Activity> activity, ArrayList<User> mentions) {
+    public Kweet(int ID, String text, int author, LocalDateTime date, List<Activity> activity, List<User> mentions) {
         this.ID = ID;
         this.text = text;
         this.author = author;
@@ -164,21 +172,21 @@ public class Kweet implements Comparable<Kweet>{
     public boolean HasMention(String searchTerm) {
         String searchTermLower = searchTerm.toLowerCase();
         for (User user : mentions) {
-            if (user.getUsername().toLowerCase() == searchTermLower) return true;
+            if (user.getUsername().toLowerCase().equals(searchTermLower)) return true;
         }
         return false;
     }
 
-    public boolean IsValid(){
-        if(text != null && text != "" && text.length() <= 140
-                && author > 0){
+    public boolean IsValid() {
+        if (text != null && text != "" && text.length() <= 140
+                && author > 0) {
             return true;
         }
         return false;
     }
 
     public void Update(Kweet kweet) {
-        if(kweet.IsValid() && kweet.getID() == this.getID()){
+        if (kweet.IsValid() && kweet.getID() == this.getID()) {
             this.text = kweet.text;
             this.mentions = kweet.mentions;
             this.activity = kweet.activity;
@@ -187,14 +195,14 @@ public class Kweet implements Comparable<Kweet>{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Kweet) {
-            if(obj.hashCode() == this.hashCode())return true;
+        if (obj instanceof Kweet && obj.hashCode() == this.hashCode()) {
+            return true;
         }
         return false;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         int hashcode = 0;
         hashcode += this.getAuthor() * 33;
         hashcode += this.getCreated().hashCode() * 33;
@@ -205,9 +213,9 @@ public class Kweet implements Comparable<Kweet>{
     }
 
     @Override
-    public int compareTo(Kweet kweet){
-        if(getCreated().isBefore(kweet.getCreated())) return 1;
-        else if(getCreated().isAfter(kweet.getCreated())) return -1;
+    public int compareTo(Kweet kweet) {
+        if (getCreated().isBefore(kweet.getCreated())) return 1;
+        else if (getCreated().isAfter(kweet.getCreated())) return -1;
         else return 0;
     }
     //endregion

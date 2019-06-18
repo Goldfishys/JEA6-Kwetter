@@ -1,6 +1,7 @@
 package DAL.Implementations.Database;
 
 import DAL.Interfaces.IKweet;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,6 +11,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 @Default
@@ -23,32 +26,31 @@ public class KweetRepo implements IKweet, Serializable {
     }
 
     @Override
-    public ArrayList<Kweet> SearchKweets(String searchTerm) {
+    public List<KweetDTO> SearchKweets(String searchTerm) {
         searchTerm = "%" + searchTerm + "%";
-        Query query = em.createQuery("SELECT k from Kweet k where LOWER(k.text) like :searchTerm")
+        Query query = em.createQuery("select new models.DTOmodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where LOWER(k.text) like :searchTerm")
                 .setParameter("searchTerm", searchTerm.toLowerCase());
         return new ArrayList<>(query.getResultList());
     }
 
     @Override
-    public ArrayList<Kweet> SearchMentions(String searchTerm) {
+    public List<KweetDTO> SearchMentions(String searchTerm) {
         return null;
     }
 
     @Override
-    public TreeSet<Kweet> GetKweetsForAccount(int accountID) {
-        System.out.println("got here!");
-        System.out.println("em: " + em);
-        Query query = em.createQuery("select k from Kweet k where k.author = :accountID")
+    public SortedSet<KweetDTO> GetKweetsForAccount(int accountID) {
+        Query query = em.createQuery("select new models.DTOmodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where k.author=:accountID", KweetDTO.class)
                 .setParameter("accountID", accountID);
-        System.out.println("query: " + query);
         return new TreeSet<>(query.getResultList());
 
     }
 
     @Override
-    public Kweet GetKweet(int KweetID) {
-        return em.find(Kweet.class, KweetID);
+    public KweetDTO GetKweet(int KweetID) {
+        return  em.createQuery("select new models.DTOmodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where k.ID =:kweetid", KweetDTO.class)
+                .setParameter("kweetid", KweetID)
+                .getSingleResult();
     }
 
     @Override

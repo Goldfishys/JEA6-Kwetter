@@ -40,7 +40,7 @@ export class TimelineComponent implements OnInit {
   private addNewKweet(msg: any){
     console.log(msg);
     msg.id = msg.ID;
-    this.kweets.push(msg);
+    this.kweets.splice(0, 0, msg);
   }
 
   private SubscribeToUpdates() {

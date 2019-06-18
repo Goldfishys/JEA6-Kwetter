@@ -1,11 +1,14 @@
 package Controllers;
 
 import Services.KweetServices;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 @Stateless
@@ -14,15 +17,15 @@ public class KweetController {
     @Inject
     private KweetServices ks;
 
-    public ArrayList<Kweet> SearchKweets(String SearchTerm, boolean mentions){
+    public List<KweetDTO> SearchKweets(String SearchTerm, boolean mentions){
         return ks.SearchKweets(SearchTerm, mentions);
     }
 
-    public Kweet PostKweet(Kweet kweet) {
+    public KweetDTO PostKweet(Kweet kweet) {
         return ks.PostKweet(kweet);
     }
 
-    public Kweet GetKweet(int kweetID) {
+    public KweetDTO GetKweet(int kweetID) {
         return ks.GetKweet(kweetID);
     }
 
@@ -34,11 +37,11 @@ public class KweetController {
         return ks.DeleteKweet(kweetID);
     }
 
-    public TreeSet<Kweet> GetRecentKweets(int accountID){
+    public SortedSet<KweetDTO> GetRecentKweets(int accountID){
         return ks.GetRecentKweets(accountID);
     }
 
-    public TreeSet<Kweet> GetTimeLine(int accountID){
+    public SortedSet<KweetDTO> GetTimeLine(int accountID){
         return ks.GetTimeLIne(accountID);
     }
 }

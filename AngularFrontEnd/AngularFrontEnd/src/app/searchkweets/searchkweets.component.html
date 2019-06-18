@@ -1,5 +1,5 @@
 <ul class="timeline">
-  <li *ngFor="let k of kweets; let i=index;">
-    <app-kweet [kweetid]="k.id"></app-kweet>
+  <li *ngFor="let kweet of kweets; let i=index;">
+    <app-kweet [kweet]="kweet"></app-kweet>
   </li>
 </ul>

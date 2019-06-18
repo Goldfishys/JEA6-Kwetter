@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RestService} from "../rest.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {applySourceSpanToExpressionIfNeeded} from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: 'app-searchkweets',

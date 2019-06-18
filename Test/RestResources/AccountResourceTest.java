@@ -57,7 +57,6 @@ public class AccountResourceTest {
     @Test
     @RunAsClient
     public void getAccountBlackBox() {
-
         //happy path met account dat bestaat
         int accid = 1;
         String location = "kwetter/account/" + accid;

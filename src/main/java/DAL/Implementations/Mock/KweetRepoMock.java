@@ -3,11 +3,10 @@ package DAL.Implementations.Mock;
 import DAL.Database;
 import DAL.Interfaces.IKweet;
 import models.Account;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 public class KweetRepoMock implements IKweet {
     public Database database;
@@ -17,24 +16,24 @@ public class KweetRepoMock implements IKweet {
     }
 
     @Override
-    public ArrayList<Kweet> SearchKweets(String searchTerm) {
+    public List<KweetDTO> SearchKweets(String searchTerm) {
         String searchTermLower = searchTerm.toLowerCase();
-        ArrayList<Kweet> results = new ArrayList<>();
+        List<KweetDTO> results = new ArrayList<>();
         for (Account acc : database.accounts) {
             for (Kweet kweet : acc.getUser().getKweets()) {
-                if (kweet.getText().toLowerCase().contains(searchTermLower)) results.add(kweet);
+                if (kweet.getText().toLowerCase().contains(searchTermLower)) results.add(new KweetDTO(kweet, acc.getUser().getUsername()));
             }
         }
         return results;
     }
 
     @Override
-    public ArrayList<Kweet> SearchMentions(String searchTerm) {
-        ArrayList<Kweet> results = new ArrayList<>();
+    public List<KweetDTO> SearchMentions(String searchTerm) {
+        List<KweetDTO> results = new ArrayList<>();
 
         for (Account acc : database.accounts) {
             for (Kweet kweet : acc.getUser().getKweets()) {
-                if (kweet.HasMention(searchTerm)) results.add(kweet);
+                if (kweet.HasMention(searchTerm)) results.add(new KweetDTO(kweet, acc.getUser().getUsername()));
             }
         }
         return results;
@@ -57,18 +56,18 @@ public class KweetRepoMock implements IKweet {
     }
 
     @Override
-    public TreeSet<Kweet> GetKweetsForAccount(int id) {
-        TreeSet<Kweet> results = new TreeSet<>();
+    public SortedSet<KweetDTO> GetKweetsForAccount(int id) {
+        SortedSet<KweetDTO> results = new TreeSet<>();
         for (Account acc : database.accounts) {
             for (Kweet kweet : acc.getUser().getKweets()) {
-                if (kweet.getAuthor() == id) results.add(kweet);
+                if (kweet.getAuthor() == id) results.add(new KweetDTO(kweet, acc.getUser().getUsername()));
             }
         }
         return results;
     }
 
     @Override
-    public Kweet GetKweet(int KweetID) {
+    public KweetDTO GetKweet(int kweetID) {
         return null;
     }
 

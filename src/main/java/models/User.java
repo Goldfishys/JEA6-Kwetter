@@ -25,7 +25,7 @@ public class User {
     private String username;
 
     @Transient
-    private ArrayList<Kweet> kweets;
+    private List<Kweet> kweets;
 
     @OneToMany()
     @JoinTable(name = "Followers",
@@ -59,7 +59,7 @@ public class User {
         this.username = username;
     }
 
-    public ArrayList<Kweet> getKweets() {
+    public List<Kweet> getKweets() {
         return kweets;
     }
 

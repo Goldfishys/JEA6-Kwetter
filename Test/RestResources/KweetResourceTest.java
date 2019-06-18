@@ -3,6 +3,7 @@ package RestResources;
 import Controllers.KweetController;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import java.io.File;
 import java.net.URL;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -80,19 +82,19 @@ public class KweetResourceTest {
 
         //post new kweet happy path
         Kweet kweet = new Kweet("Test Kweet", 1, null, null);
-        Kweet returnKweet = kc.PostKweet(kweet);
+        KweetDTO returnKweet = kc.PostKweet(kweet);
         Assert.assertEquals(kweet.getText(), returnKweet.getText());
         Assert.assertTrue(returnKweet.getID() > 0);
 
         //post a new kweet without text
         kweet = new Kweet("", 1, null, null);
         returnKweet = kc.PostKweet(kweet);
-        Assert.assertTrue(returnKweet == null);
+        Assert.assertNull(returnKweet);
 
         //post a new kweet with a null value as text
         kweet = new Kweet(null, 1, null, null);
         returnKweet = kc.PostKweet(kweet);
-        Assert.assertTrue(returnKweet == null);
+        Assert.assertNull(returnKweet);
     }
 
     @Test
@@ -130,7 +132,7 @@ public class KweetResourceTest {
     public void UpdateKweetWhitebox() throws Exception {
         int kweetid = 1;
         //get kweet
-        Kweet kweet = kc.GetKweet(kweetid);
+        Kweet kweet = new Kweet(kc.GetKweet(kweetid));
         String textupdate = "check JPA still works";
 
         //update kweet
@@ -139,8 +141,8 @@ public class KweetResourceTest {
         System.out.println(kweet2.getText());
 
         //get kweet and assert texts
-        kweet = kc.GetKweet(kweetid);
-        Assert.assertEquals(textupdate, kweet.getText());
+        KweetDTO kwt = kc.GetKweet(kweetid);
+        Assert.assertEquals(textupdate, kwt.getText());
     }
 
     @Test
@@ -171,9 +173,10 @@ public class KweetResourceTest {
     @Test
     @InSequence(6)
     public void GetRecentKweetsWhiteBox() {
-        TreeSet<Kweet> recentKweets = kc.GetRecentKweets(1);
+        SortedSet<KweetDTO> recentKweets = kc.GetRecentKweets(1);
         System.out.println(recentKweets.size());
-        for (Kweet kweet : recentKweets) {
+        Assert.assertTrue(recentKweets.size() <= 10);
+        for (KweetDTO kweet : recentKweets) {
             System.out.println("Text: " + kweet.getText() + " Created: " + kweet.getCreated());
         }
     }
@@ -187,7 +190,7 @@ public class KweetResourceTest {
         Response response = given().contentType(ContentType.JSON).get(basePath + location);
 
         System.out.println(response.getBody().asString());
-        Kweet[] recentKweets = response.getBody().as(Kweet[].class);
+        KweetDTO[] recentKweets = response.getBody().as(KweetDTO[].class);
 
         Assert.assertTrue(recentKweets.length <= 10);
     }
@@ -202,6 +205,18 @@ public class KweetResourceTest {
 
         Kweet[] foundKweets = response.getBody().as(Kweet[].class);
         System.out.println("size: " + foundKweets.length);
+        for (Kweet kweet : foundKweets) {
+            System.out.println("kweetText: " + kweet.getText());
+            Assert.assertTrue(kweet.getText().toLowerCase().contains(searchTerm.toLowerCase()));
+        }
+
+        searchTerm = "@";
+        location = "kwetter/kweet/search/" + searchTerm;
+        response = given().contentType(ContentType.JSON).get(basePath + location);
+
+        foundKweets = response.getBody().as(Kweet[].class);
+        System.out.println("size: " + foundKweets.length);
+        Assert.assertEquals(0, foundKweets.length);
         for (Kweet kweet : foundKweets) {
             System.out.println("kweetText: " + kweet.getText());
             Assert.assertTrue(kweet.getText().toLowerCase().contains(searchTerm.toLowerCase()));
@@ -226,7 +241,7 @@ public class KweetResourceTest {
     @Test
     @InSequence(10)
     public void GetTimeLineWhiteBox(){
-        TreeSet<Kweet> kweets = kc.GetTimeLine(1);
+        SortedSet<KweetDTO> kweets = kc.GetTimeLine(1);
         Assert.assertEquals(20, kweets.size());
     }
 
@@ -237,10 +252,13 @@ public class KweetResourceTest {
         int accid = 1;
         String location = "kwetter/kweet/timeline/" + accid;
         Response response = given().contentType(ContentType.JSON).get(basePath + location);
-        System.out.println("body: " + response.getBody().asString());
-        Kweet[] kweets = response.getBody().as(Kweet[].class);
-
-        System.out.println("\n Kweet 0: " + kweets[0].getCreated().toString());
+        KweetDTO[] kweets = response.getBody().as(KweetDTO[].class);
         Assert.assertEquals(20, kweets.length);
+
+        accid = 20000;
+        location = "kwetter/kweet/timeline/" + accid;
+        response = given().contentType(ContentType.JSON).get(basePath + location);
+        kweets = response.getBody().as(KweetDTO[].class);
+        Assert.assertEquals(0, kweets.length);
     }
 }

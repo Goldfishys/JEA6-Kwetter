@@ -2,6 +2,7 @@ package Websockets;
 
 import Controllers.KweetController;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 import models.User;
 
@@ -68,9 +69,9 @@ public class KweetWebsocket {
         }
     }
 
-    public void broadcastPostedKweet(Kweet kweet, List<User> followers) {
+    public void broadcastPostedKweet(KweetDTO kweet, List<User> followers) {
         //send kweet to the author
-        sendMessage(getSession(kweet.getAuthor()), kweet);
+        sendMessage(getSession(kweet.getAuthorID()), kweet);
 
         //send kweet to his followers that are logged in
         for (User user : followers) {

@@ -3,6 +3,7 @@ package Services;
 import DAL.Interfaces.IKweet;
 import DAL.Interfaces.IUser;
 import Websockets.KweetWebsocket;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 import models.User;
 
@@ -10,6 +11,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -34,28 +36,27 @@ public class KweetServices {
     //endregion
 
     //region methods
-    public ArrayList<Kweet> SearchKweets(String searchTerm, boolean mentions) {
-        if (searchTerm != "") {
-            //do database logic
-            ArrayList<Kweet> foundKweets = (mentions) ? kweetRepo.SearchMentions(searchTerm) : kweetRepo.SearchKweets(searchTerm);
-            return foundKweets;
+    public List<KweetDTO> SearchKweets(String searchTerm, boolean mentions) {
+        if (!searchTerm.equals("")) {
+            return (mentions) ? kweetRepo.SearchMentions(searchTerm) : kweetRepo.SearchKweets(searchTerm);
         }
         return new ArrayList<>();
     }
 
-    public Kweet PostKweet(Kweet kweet) {
+    public KweetDTO PostKweet(Kweet kweet) {
         if(kweet != null && kweet.IsValid()){
             System.out.println("Posting the kweet");
             kweet = kweetRepo.PostKweet(kweet);
+            KweetDTO kwt = this.GetKweet(kweet.getID());
             System.out.println("Kweet is valid");
-            this.broadcastKweet(kweet);
-            return kweet;
+            this.broadcastKweet(kwt);
+            return kwt;
         }
         System.out.println("Kweet is invalid");
         return null;
     }
 
-    public Kweet GetKweet(int kweetID) {
+    public KweetDTO GetKweet(int kweetID) {
         return kweetRepo.GetKweet(kweetID);
     }
 
@@ -70,22 +71,26 @@ public class KweetServices {
         return kweetRepo.DeleteKweet(kweetID);
     }
 
-    public TreeSet<Kweet> GetRecentKweets(int accountID) {
+    public SortedSet<KweetDTO> GetRecentKweets(int accountID) {
         return kweetRepo.GetKweetsForAccount(accountID).stream().limit(10).collect(Collectors.toCollection(TreeSet::new));
     }
 
-    public TreeSet<Kweet> GetTimeLIne(int accountID) {
-        ArrayList<User> following = userRepo.GetFollowing(userRepo.GetUser(accountID).getFollowing());
-        TreeSet<Kweet> timeLine = GetRecentKweets(accountID);
-        for(User usr : following){
-            timeLine.addAll(GetRecentKweets(usr.getAccount().getID()));
-        }
+    public SortedSet<KweetDTO> GetTimeLIne(int accountID) {
+        User user = userRepo.GetUser(accountID);
+        if(user != null) {
+            ArrayList<User> following = userRepo.GetFollowing(user.getFollowing());
+            SortedSet<KweetDTO> timeLine = GetRecentKweets(accountID);
+            for (User followedUser : following) {
+                timeLine.addAll(GetRecentKweets(followedUser.getAccount().getID()));
+            }
 
-        return timeLine;
+            return timeLine;
+        }
+        return new TreeSet<>();
     }
 
-    public void broadcastKweet(Kweet kweet){
-        List<User> followers = us.GetFollowers(kweet.getAuthor());
+    public void broadcastKweet(KweetDTO kweet){
+        List<User> followers = us.GetFollowers(kweet.getAuthorID());
         kweetWebsocket.broadcastPostedKweet(kweet, followers);
     }
     //endregion

@@ -1,17 +1,19 @@
 package DAL.Interfaces;
 
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.SortedSet;
 
 public interface IKweet {
-    ArrayList<Kweet> SearchKweets(String searchTerm);
-    ArrayList<Kweet> SearchMentions(String searchTerm);
+    List<KweetDTO> SearchKweets(String searchTerm);
+    List<KweetDTO> SearchMentions(String searchTerm);
 
-    TreeSet<Kweet> GetKweetsForAccount(int accountID);
+    SortedSet<KweetDTO> GetKweetsForAccount(int accountID);
 
-    Kweet GetKweet(int KweetID);
+    KweetDTO GetKweet(int KweetID);
     Kweet PostKweet(Kweet kweet);
     Kweet UpdateKweet(Kweet kweet);
     boolean DeleteKweet(int kweetID);

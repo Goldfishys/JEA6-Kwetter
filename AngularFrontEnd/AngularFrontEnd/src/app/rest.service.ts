@@ -9,7 +9,9 @@ import {map, catchError, tap} from 'rxjs/operators';
 export class RestService {
 
   endpoint = 'http://localhost:8080/javaee8-essentials-archetype/kwetter';
-  headers_object = new HttpHeaders().set("Authorization", "Bearer " + localStorage.getItem("access_token"));
+  headers_object = new HttpHeaders()
+    .set("Authorization", "Bearer " + localStorage.getItem("access_token"))
+    .set("Content-Type", "application/json");
   httpOptions = {
     headers: this.headers_object
   };

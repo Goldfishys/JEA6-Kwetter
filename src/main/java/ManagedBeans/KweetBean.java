@@ -1,6 +1,7 @@
 package ManagedBeans;
 
 import Controllers.KweetController;
+import models.DTOmodels.KweetDTO;
 import models.Kweet;
 
 import javax.faces.view.ViewScoped;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @Named
 @ViewScoped
@@ -18,7 +20,7 @@ public class KweetBean implements Serializable {
 
     //region properties
     private String searchTerm;
-    private ArrayList<Kweet> kweets;
+    private List<KweetDTO> kweets;
     //endregion
 
     //region get/set
@@ -30,11 +32,11 @@ public class KweetBean implements Serializable {
         this.searchTerm = searchTerm;
     }
 
-    public ArrayList<Kweet> getKweets() {
+    public List<KweetDTO> getKweets() {
         return kweets;
     }
 
-    public void setKweets(ArrayList<Kweet> kweets) {
+    public void setKweets(List<KweetDTO> kweets) {
         this.kweets = kweets;
     }
 
@@ -48,7 +50,7 @@ public class KweetBean implements Serializable {
         System.out.println("starting search method");
         if(searchTerm != null && searchTerm != "") {
            kweets = kc.SearchKweets(searchTerm,false);
-            for (Kweet kweet : kweets) {
+            for (KweetDTO kweet : kweets) {
                 System.out.println(kweet.toString());
             }
         }
