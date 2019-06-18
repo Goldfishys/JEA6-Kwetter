@@ -1,11 +1,11 @@
 package Websockets;
 
 import Controllers.KweetController;
-import Controllers.UserController;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Kweet;
 import models.User;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -13,8 +13,8 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Singleton
 @Startup
@@ -26,10 +26,9 @@ public class KweetWebsocket {
     @Inject
     private KweetController kc;
 
-    @Inject
-    private UserController us;
 
-    public KweetWebsocket() {
+    @PostConstruct
+    public void startWebsocket() {
         System.out.println("Starting the websocket on the server!");
         user_Session = new HashMap<>();
     }
@@ -54,47 +53,48 @@ public class KweetWebsocket {
     @OnMessage
     public void handleMessage(String message) {
         System.out.println("Message: " + message);
-        if(message != "") {
+        if (message != "") {
             System.out.println("#OnMessage: " + message);
-            Gson gson = new Gson();
-            Kweet kweet = gson.fromJson(message, Kweet.class);
-
-            System.out.println("Created kweet from message, posting it in the database");
-            Kweet kwt2 = kc.PostKweet(kweet);
-
-            System.out.println("Kweet has been saved, sending the new kweet back to the original session");
-            BroadcastPostedKweet(kwt2);
-        }
-        else{
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                Kweet kweet = mapper.readValue("{'name' : 'mkyong'}", Kweet.class);
+                System.out.println("Created kweet from message, posting it in the database");
+                kc.PostKweet(kweet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
             System.out.println("Wowa your message is empty!");
         }
     }
 
-    private void BroadcastPostedKweet(Kweet kwt2) {
+    public void broadcastPostedKweet(Kweet kweet, List<User> followers) {
         //send kweet to the author
-        sendMessage(getSession(kwt2.getAuthor()), kwt2);
+        sendMessage(getSession(kweet.getAuthor()), kweet);
 
         //send kweet to his followers that are logged in
-        ArrayList<User> users = us.GetFollowers(kwt2.getAuthor());
-        for(User user : users){
+        for (User user : followers) {
             Session session = getSession(user.getId());
-            if(session != null){
-                sendMessage(getSession(user.getId()), kwt2);
+            System.out.println("SessionString: " + session);
+            if (session != null) {
+                sendMessage(getSession(user.getId()), kweet);
             }
         }
     }
 
-    private Session getSession(int userid){
+    private Session getSession(int userid) {
         return user_Session.get(userid);
     }
 
-    private void sendMessage(Session session, Object message){
-        Gson gson = new Gson();
-        String json = gson.toJson(message);
-        try {
-            session.getBasicRemote().sendText(json);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void sendMessage(Session session, Object message) {
+        if(session != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String json = mapper.writeValueAsString(message);
+                session.getBasicRemote().sendText(json);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

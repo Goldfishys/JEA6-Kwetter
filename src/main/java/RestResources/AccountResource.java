@@ -2,7 +2,7 @@ package RestResources;
 
 import Controllers.AccountController;
 import models.Account;
-import models.JwtToken;
+import models.DTOmodels.JWTTokenDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -33,7 +33,7 @@ public class AccountResource {
     @Path("/login")
     @Consumes("application/json")
     @Produces("application/json")
-    public JwtToken Login(ArrayList<String> args){
+    public JWTTokenDTO Login(ArrayList<String> args){
         System.out.println("Size: " + args.size());
         if(args.size() > 1) {
             return ac.login(args.get(0), args.get(1));

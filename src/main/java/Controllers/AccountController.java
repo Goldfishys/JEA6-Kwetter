@@ -2,11 +2,10 @@ package Controllers;
 
 import Services.AccountServices;
 import models.Account;
-import models.JwtToken;
+import models.DTOmodels.JWTTokenDTO;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -23,7 +22,7 @@ public class AccountController {
         return as.GetAccounts();
     }
 
-    public JwtToken login(String username, String password) {
+    public JWTTokenDTO login(String username, String password) {
         return as.login(username, password);
     }
 }

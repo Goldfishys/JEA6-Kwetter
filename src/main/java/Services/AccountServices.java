@@ -3,11 +3,10 @@ package Services;
 import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
-import models.JwtToken;
+import models.DTOmodels.JWTTokenDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestScoped
@@ -15,6 +14,9 @@ public class AccountServices {
 
     @Inject
     private IAccount accountRepo;
+
+    @Inject
+    JWTService jwtService;
 
     //region constructor
     public AccountServices() {
@@ -36,11 +38,12 @@ public class AccountServices {
         return accountRepo.GetAccounts();
     }
 
-    public JwtToken login(String username, String password) {
+    public JWTTokenDTO login(String username, String password) {
         if (username != null && password != null && username != "" && password != "") {
             Account acc = accountRepo.login(username, password);
             if (acc != null) {
-                return new JwtToken(acc, username);
+//                String token = jwtService.createToken(username, acc.getID());
+                return new JWTTokenDTO("SecretToken",username, acc.getID());
             }
             return null;
         }

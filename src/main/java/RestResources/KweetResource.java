@@ -29,7 +29,7 @@ public class KweetResource {
 
     @POST
     @Path("")
-    @JWTTokenNeeded
+//    @JWTTokenNeeded
     @Consumes("application/json")
     @Produces("application/json")
     public Kweet PostKweet(Kweet kweet) {
@@ -66,7 +66,7 @@ public class KweetResource {
     }
 
     @GET
-    @JWTTokenNeeded
+//    @JWTTokenNeeded
     @Path("/timeline/{accountID}")
     @Produces("application/json")
     public TreeSet<Kweet> GetTimeLine(@PathParam("accountID") int accountID, @Context UriInfo uriInfo){

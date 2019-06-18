@@ -17,8 +17,8 @@ export class TimelineComponent implements OnInit {
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
-    this.getTimeLine();
-    this.SubscribeToUpdates();
+      this.getTimeLine();
+      this.SubscribeToUpdates();
   }
 
   ngOnInit() {
@@ -44,11 +44,14 @@ export class TimelineComponent implements OnInit {
   }
 
   private SubscribeToUpdates() {
-    this.websocketService.createConnection();
-    this.websocketService.subject.subscribe(
-      msg => this.addNewKweet(msg), // Called whenever there is a message from the server.
-      err => console.log('Error occured: '+ err), // Called if at any point WebSocket API signals some kind of error.
-      () => console.log('complete') // Called when connection is closed (for whatever reason).
-    );
+    if (this.jwt.loggedIn) {
+      console.log("Starting websocket connection")
+      this.websocketService.createConnection();
+      this.websocketService.subject.subscribe(
+        msg => this.addNewKweet(msg), // Called whenever there is a message from the server.
+        err => console.log('Error occured: ' + err), // Called if at any point WebSocket API signals some kind of error.
+        () => console.log('Connection closed') // Called when connection is closed (for whatever reason).
+      );
+    }
   }
 }

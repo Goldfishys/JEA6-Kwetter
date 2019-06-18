@@ -31,21 +31,24 @@ public class KweetResourceTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        File[] files = Maven.resolver().loadPomFromFile("pom.xml")
-                .importRuntimeDependencies().resolve().withTransitivity().asFile();
+        File[] files= Maven.resolver().loadPomFromFile("pom.xml")
+                .importRuntimeDependencies()
+                .resolve()
+                .withTransitivity()
+                .asFile();
 
         WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addAsLibraries(files)
                 .addAsDirectory("src/main/java")
                 .addPackages(true, "DAL")
                 .addPackages(true, "models")
                 .addPackages(true, "Controllers")
                 .addPackages(true, "RestResources")
                 .addPackages(true, "Services")
-                .addPackages(true, "Jackson")
                 .addPackages(true, "com.airhacks")
+                .addPackages(true,"Websockets")
                 .addAsResource("META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
-                .addAsLibraries(files);
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
         // Show the deploy structure
         System.out.println(war.toString(true));
@@ -84,12 +87,12 @@ public class KweetResourceTest {
         //post a new kweet without text
         kweet = new Kweet("", 1, null, null);
         returnKweet = kc.PostKweet(kweet);
-        Assert.assertFalse(returnKweet.getID() > 0);
+        Assert.assertTrue(returnKweet == null);
 
         //post a new kweet with a null value as text
         kweet = new Kweet(null, 1, null, null);
         returnKweet = kc.PostKweet(kweet);
-        Assert.assertFalse(returnKweet.getID() > 0);
+        Assert.assertTrue(returnKweet == null);
     }
 
     @Test

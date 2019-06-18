@@ -1,8 +1,9 @@
 package com.airhacks;
 
-import models.JwtToken;
+import Services.JWTService;
 
 import javax.annotation.Priority;
+import javax.inject.Inject;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -16,6 +17,9 @@ import java.io.IOException;
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenNeededFilter implements ContainerRequestFilter {
 
+    @Inject
+    JWTService jwtService;
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         System.out.println("AUTH FILTER");
@@ -27,8 +31,7 @@ public class JwtTokenNeededFilter implements ContainerRequestFilter {
 
         // Extract the token from the HTTP Authorization header
         String token = authorizationHeader.substring("Bearer".length()).trim();
-        JwtToken jwtToken = new JwtToken(token);
-        if(jwtToken.VerifyToken()){
+        if(jwtService.verifyToken(token)){
             System.out.println("valid token: " + token);
         }else{
             System.out.println("Invaldig token: " + token);

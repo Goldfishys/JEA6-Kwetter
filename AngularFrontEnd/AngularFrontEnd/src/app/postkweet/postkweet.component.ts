@@ -24,7 +24,7 @@ export class PostkweetComponent implements OnInit {
 
   public postkweet(){
     this.kweetdata.author = this.jwt.getCurretnUser.userid;
-    this.websocketService.sendMessage(this.kweetdata);
+    this.rest.postkweet(this.kweetdata);
   }
 
 }
