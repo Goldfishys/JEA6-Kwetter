@@ -1,7 +1,7 @@
 package DAL.Implementations.Database;
 
 import DAL.Interfaces.IKweet;
-import models.DTOmodels.KweetDTO;
+import models.dtomodels.KweetDTO;
 import models.Kweet;
 
 import javax.enterprise.context.RequestScoped;
@@ -28,7 +28,7 @@ public class KweetRepo implements IKweet, Serializable {
     @Override
     public List<KweetDTO> SearchKweets(String searchTerm) {
         searchTerm = "%" + searchTerm + "%";
-        Query query = em.createQuery("select new models.DTOmodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where LOWER(k.text) like :searchTerm")
+        Query query = em.createQuery("select new models.dtomodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where LOWER(k.text) like :searchTerm")
                 .setParameter("searchTerm", searchTerm.toLowerCase());
         return new ArrayList<>(query.getResultList());
     }
@@ -40,7 +40,7 @@ public class KweetRepo implements IKweet, Serializable {
 
     @Override
     public SortedSet<KweetDTO> GetKweetsForAccount(int accountID) {
-        Query query = em.createQuery("select new models.DTOmodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where k.author=:accountID", KweetDTO.class)
+        Query query = em.createQuery("select new models.dtomodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where k.author=:accountID", KweetDTO.class)
                 .setParameter("accountID", accountID);
         return new TreeSet<>(query.getResultList());
 
@@ -48,9 +48,12 @@ public class KweetRepo implements IKweet, Serializable {
 
     @Override
     public KweetDTO GetKweet(int KweetID) {
-        return  em.createQuery("select new models.DTOmodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where k.ID =:kweetid", KweetDTO.class)
+        return  em.createQuery("select new models.dtomodels.KweetDTO(k.ID, k.text, k.author, u.username, k.created) from Kweet k join Account a on k.author=a.ID join User u on a.user=u.account where k.ID =:kweetid", KweetDTO.class)
                 .setParameter("kweetid", KweetID)
-                .getSingleResult();
+                .getResultList()
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

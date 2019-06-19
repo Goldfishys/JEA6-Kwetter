@@ -27,13 +27,13 @@ public class User {
     @Transient
     private List<Kweet> kweets;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Followers",
             joinColumns = @JoinColumn(name = "IDAccountToFollow"),
             inverseJoinColumns = @JoinColumn(name = "IDuserFollower"))
     private List<Account> followers;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Followers",
             joinColumns = @JoinColumn(name = "IDuserFollower"),
             inverseJoinColumns = @JoinColumn(name = "IDAccountToFollow"))
@@ -128,44 +128,13 @@ public class User {
     //endregion
 
     //region Methods
-
-//    public ArrayList<Kweet> GetTimeLine(){
-//        ArrayList<Kweet> kweets = new ArrayList<>();
-//        kweets.addAll(this.GetRecentKweets());
-//
-//        for(Account follow : following){
-//            kweets.addAll(follow.getUser().GetRecentKweets());
-//        }
-//        return SortKweetsNewFirst(kweets);
-//    }
-
     public void AddFollower(Account follower) {
-        for (Account acc : followers) {
-            System.out.println(acc.toString());
-        }
-        followers.add(follower);
+        if(!followers.contains(follower)) followers.add(follower);
     }
-
-//    private void AddFollowing(Account toFollow) {
-//        if (!followers.contains(toFollow)) {
-//            this.following.add(toFollow);
-//        }
-//    }
 
     public void RemoveFollower(Account followerToRemove) {
-        for (Iterator<Account> iterator = this.getFollowers().iterator(); iterator.hasNext(); ) {
-            Account acc = iterator.next();
-            if (acc.getID() == followerToRemove.getID()) {
-                iterator.remove();
-            }
-        }
+        this.getFollowers().removeIf(acc -> acc.getID() == followerToRemove.getID());
     }
-
-//    private void RemoveFollowing(Account followingToRemove) {
-//        if(following.contains(followingToRemove)){
-//            following.remove(followingToRemove);
-//        }
-//    }
 
     @Override
     public String toString() {
@@ -175,7 +144,7 @@ public class User {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
-            if (obj == this) return true;
+            return ((User) obj).getId() == this.getId();
         }
         return false;
     }

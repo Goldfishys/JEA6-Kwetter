@@ -3,6 +3,8 @@ package DAL.Implementations.Database;
 import DAL.Interfaces.IProfile;
 import models.Profile;
 import models.User;
+import models.dtomodels.KweetDTO;
+import models.dtomodels.ProfileDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
@@ -19,8 +21,12 @@ public class ProfileRepo implements IProfile {
     public ProfileRepo() {
     }
 
-    public Profile GetProfile(int userid) {
-        return em.find(User.class, userid).getProfile();
+    public ProfileDTO GetProfile(int userid) {
+        return  em.createQuery("select new models.dtomodels.ProfileDTO(u.profile.profilePicture, u.profile.bio, u.profile.location, u.profile.websiteURL, u.username ) from User u where u.id=:userid", ProfileDTO.class)
+                .setParameter("userid", userid)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
     }
 
     public Profile UpdateProfile(int userid, Profile profile) {

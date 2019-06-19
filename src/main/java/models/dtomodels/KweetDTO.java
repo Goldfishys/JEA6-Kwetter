@@ -1,4 +1,4 @@
-package models.DTOmodels;
+package models.dtomodels;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

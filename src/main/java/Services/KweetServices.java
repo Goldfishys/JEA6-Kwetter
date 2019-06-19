@@ -3,9 +3,10 @@ package Services;
 import DAL.Interfaces.IKweet;
 import DAL.Interfaces.IUser;
 import Websockets.KweetWebsocket;
-import models.DTOmodels.KweetDTO;
+import models.dtomodels.KweetDTO;
 import models.Kweet;
 import models.User;
+import models.dtomodels.UserDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -20,9 +21,6 @@ public class KweetServices {
 
     @Inject
     private IKweet kweetRepo;
-
-    @Inject
-    private IUser userRepo;
 
     @Inject
     private UserServices us;
@@ -76,21 +74,20 @@ public class KweetServices {
     }
 
     public SortedSet<KweetDTO> GetTimeLIne(int accountID) {
-        User user = userRepo.GetUser(accountID);
+        User user = us.GetUser(accountID);
         if(user != null) {
-            ArrayList<User> following = userRepo.GetFollowing(user.getFollowing());
+            List<UserDTO> following = us.GetFollowing(user.getId());
             SortedSet<KweetDTO> timeLine = GetRecentKweets(accountID);
-            for (User followedUser : following) {
-                timeLine.addAll(GetRecentKweets(followedUser.getAccount().getID()));
+            for (UserDTO followedUser : following) {
+                timeLine.addAll(GetRecentKweets(followedUser.getId()));
             }
-
             return timeLine;
         }
         return new TreeSet<>();
     }
 
     public void broadcastKweet(KweetDTO kweet){
-        List<User> followers = us.GetFollowers(kweet.getAuthorID());
+        List<UserDTO> followers = us.GetFollowers(kweet.getAuthorID());
         kweetWebsocket.broadcastPostedKweet(kweet, followers);
     }
     //endregion

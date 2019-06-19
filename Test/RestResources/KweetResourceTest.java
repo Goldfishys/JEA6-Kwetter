@@ -3,14 +3,13 @@ package RestResources;
 import Controllers.KweetController;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
-import models.DTOmodels.KweetDTO;
+import models.dtomodels.KweetDTO;
 import models.Kweet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -24,7 +23,6 @@ import javax.inject.Inject;
 import java.io.File;
 import java.net.URL;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import static com.jayway.restassured.RestAssured.given;
 

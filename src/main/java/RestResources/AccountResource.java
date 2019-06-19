@@ -2,7 +2,7 @@ package RestResources;
 
 import Controllers.AccountController;
 import models.Account;
-import models.DTOmodels.JWTTokenDTO;
+import models.dtomodels.JWTTokenDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

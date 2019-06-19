@@ -3,6 +3,7 @@ package RestResources;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 import models.Profile;
+import models.dtomodels.ProfileDTO;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -26,10 +27,14 @@ public class ProfileResourceTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        File[] files = Maven.resolver().loadPomFromFile("pom.xml")
-                .importRuntimeDependencies().resolve().withTransitivity().asFile();
+        File[] files= Maven.resolver().loadPomFromFile("pom.xml")
+                .importRuntimeDependencies()
+                .resolve()
+                .withTransitivity()
+                .asFile();
 
         WebArchive war = ShrinkWrap.create(WebArchive.class)
+                .addAsLibraries(files)
                 .addAsDirectory("src/main/java")
                 .addPackages(true, "DAL")
                 .addPackages(true, "models")
@@ -37,9 +42,9 @@ public class ProfileResourceTest {
                 .addPackages(true, "RestResources")
                 .addPackages(true, "Services")
                 .addPackages(true, "com.airhacks")
+                .addPackages(true,"Websockets")
                 .addAsResource("META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
-                .addAsLibraries(files);
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
         // Show the deploy structure
         System.out.println(war.toString(true));
@@ -54,9 +59,15 @@ public class ProfileResourceTest {
     public void getProfileBlackBox() {
         String location = "kwetter/profile/1";
         Response response = given().contentType(ContentType.JSON).when().get(basePath + location);
-        Profile profile = response.getBody().as(Profile.class);
+        ProfileDTO profile = response.getBody().as(ProfileDTO.class);
         System.out.println(profile.toString());
-        Assert.assertEquals(Profile.class, profile.getClass());
+        Assert.assertEquals(ProfileDTO.class, profile.getClass());
+
+        location = "kwetter/profile/2000";
+        response = given().contentType(ContentType.JSON).when().get(basePath + location);
+        System.out.println("body: " + response.getBody());
+        System.out.println("Code " + response.getStatusCode());
+        Assert.assertEquals(204, response.getStatusCode());
     }
 
     @Test

@@ -8,21 +8,18 @@ import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
   styleUrls: ['./recentkweets.component.css']
 })
 export class RecentkweetsComponent implements OnInit,OnDestroy {
-  public userid:number;
+  @Input() userid:number;
   public recentkweets:any = [];
   public following:any = [];
   public followers:any = [];
   navigationSubscription;
 
-  constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) {
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      if (e instanceof NavigationEnd) {
-        this.initialiseRecentKweets();
-      }
-    });
+  constructor(public rest:RestService) {
+
   }
 
   ngOnInit() {
+    this.initialiseRecentKweets();
   }
 
   ngOnDestroy(): void {
@@ -32,10 +29,6 @@ export class RecentkweetsComponent implements OnInit,OnDestroy {
   }
 
   private initialiseRecentKweets(){
-    this.route.params.subscribe(params => {
-      this.userid = +params['id'];
-      console.log("userid pp: " + this.userid);
-    });
     console.log("userid: " + this.userid);
     this.getRecentKweets();
   }

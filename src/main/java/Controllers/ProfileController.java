@@ -2,6 +2,8 @@ package Controllers;
 
 import Services.ProfileServices;
 import models.Profile;
+import models.dtomodels.ProfileDTO;
+
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -12,8 +14,7 @@ public class ProfileController {
     @Inject
     private ProfileServices ps;
 
-
-    public Profile GetProfile(int userid){
+    public ProfileDTO GetProfile(int userid){
         return ps.GetProfile(userid);
     }
 

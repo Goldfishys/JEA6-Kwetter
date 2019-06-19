@@ -1,9 +1,10 @@
 package DAL.Interfaces;
 
 import models.Profile;
+import models.dtomodels.ProfileDTO;
 
 public interface IProfile {
-    Profile GetProfile(int userid);
+    ProfileDTO GetProfile(int userid);
 
     Profile UpdateProfile(int id, Profile profile);
 }

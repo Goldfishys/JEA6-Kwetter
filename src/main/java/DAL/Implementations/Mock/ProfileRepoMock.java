@@ -4,6 +4,7 @@ import DAL.Database;
 import DAL.Interfaces.IProfile;
 import models.Account;
 import models.Profile;
+import models.dtomodels.ProfileDTO;
 
 public class ProfileRepoMock implements IProfile {
     private Database database;
@@ -13,10 +14,10 @@ public class ProfileRepoMock implements IProfile {
     }
 
     @Override
-    public Profile GetProfile(int id) {
-        for(Account acc : database.accounts){
-            if(acc.getID() == id) return acc.getUser().getProfile();
-        }
+    public ProfileDTO GetProfile(int id) {
+//        for(Account acc : database.accounts){
+//            if(acc.getID() == id) return acc.getUser().getProfile();
+//        }
         return null;
     }
 

@@ -3,7 +3,7 @@ package Services;
 import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
-import models.DTOmodels.JWTTokenDTO;
+import models.dtomodels.JWTTokenDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

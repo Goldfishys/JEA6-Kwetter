@@ -2,6 +2,7 @@ package RestResources;
 
 import Controllers.ProfileController;
 import models.Profile;
+import models.dtomodels.ProfileDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -16,7 +17,7 @@ public class ProfileResource {
     @GET
     @Path("/{userid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Profile getProfile(@PathParam("userid") int userid){
+    public ProfileDTO getProfile(@PathParam("userid") int userid){
         return pc.GetProfile(userid);
     }
 

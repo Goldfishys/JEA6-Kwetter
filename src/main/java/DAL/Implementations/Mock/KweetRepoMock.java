@@ -3,7 +3,7 @@ package DAL.Implementations.Mock;
 import DAL.Database;
 import DAL.Interfaces.IKweet;
 import models.Account;
-import models.DTOmodels.KweetDTO;
+import models.dtomodels.KweetDTO;
 import models.Kweet;
 
 import java.util.*;

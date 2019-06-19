@@ -10,8 +10,9 @@ import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 export class ProfielpaginaComponent implements OnInit,OnDestroy {
   public userid:number;
   public profiledetails:any;
-  public following:any = [];
+  public following:any=[];
   navigationSubscription;
+  public toggle:boolean;
 
   constructor(public rest:RestService, private route: ActivatedRoute, private router: Router) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -32,26 +33,21 @@ export class ProfielpaginaComponent implements OnInit,OnDestroy {
 
   private initialiseProfile() {
     this.route.params.subscribe(params => {
-      this.userid = +params['id'];
+      this.userid = params['id'];
       console.log("userid pp: " + this.userid);
     });
-    this.getFollowing();
+    this.showKeets();
     this.getProfileDetails();
+    this.getFollowing();
   }
 
   public getProfileDetails(){
     this.rest.getProfile(this.userid).subscribe((data:any)=> {
       console.log(data);
       this.profiledetails = data;
-      this.getUsername();
     });
   }
 
-  public getUsername(){
-    this.rest.getUser(this.userid).subscribe((data:any)=> {
-      this.profiledetails.username = data.username;
-    });
-  }
 
   public getFollowing(){
     this.rest.getFollowing(this.userid).subscribe((data:{})=>{
@@ -59,5 +55,13 @@ export class ProfielpaginaComponent implements OnInit,OnDestroy {
       console.log(data);
       this.following = data;
     });
+  }
+
+  public showKeets(){
+    this.toggle = true;
+  }
+
+  public showFollowers(){
+    this.toggle = false;
   }
 }

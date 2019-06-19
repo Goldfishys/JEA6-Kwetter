@@ -2,7 +2,7 @@ package Controllers;
 
 import Services.AccountServices;
 import models.Account;
-import models.DTOmodels.JWTTokenDTO;
+import models.dtomodels.JWTTokenDTO;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

@@ -3,11 +3,13 @@ package DAL.Implementations.Database;
 import DAL.Interfaces.IUser;
 import models.Account;
 import models.User;
+import models.dtomodels.UserDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,7 @@ public class UserRepo implements IUser {
 
     @Override
     public User GetUser(int ID) {
-        User user = em.find(User.class, ID);
-        return user;
+        return em.find(User.class, ID);
     }
 
     @Override
@@ -35,21 +36,26 @@ public class UserRepo implements IUser {
     }
 
     @Override
-    public ArrayList<User> GetFollowers(List<Account> followers) {
-        ArrayList<User> users = new ArrayList<>();
-        for (Account follower : followers) {
-            users.add(GetUser(follower.getID()));
+    public List<UserDTO> GetFollowers(int userID) {
+        User usr = em.find(User.class, userID);
+        List<UserDTO> followers = new ArrayList<>();
+        if(usr != null) {
+            for (Account acc : usr.getFollowers()) {
+                followers.add(new UserDTO(acc.getUser().getId(), acc.getUser().getUsername()));
+            }
         }
-        return users;
+        return followers;
     }
 
-    public ArrayList<User> GetFollowing(List<Account> following) {
-        //TODO find better way to get following
-        ArrayList<User> users = new ArrayList<>();
-        for (Account acc : following) {
-            users.add(GetUser(acc.getID()));
+    public List<UserDTO> GetFollowing(int id) {
+        User usr = em.find(User.class, id);
+        List<UserDTO> following = new ArrayList<>();
+        if(usr != null) {
+            for (Account acc : usr.getFollowing()) {
+                following.add(new UserDTO(acc.getUser().getId(), acc.getUser().getUsername()));
+            }
         }
-        return users;
+        return following;
     }
 
     public void FollowUser(int idToFollow, Account Follower) {

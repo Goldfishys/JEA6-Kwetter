@@ -1,9 +1,8 @@
 package DAL.Interfaces;
 
-import models.DTOmodels.KweetDTO;
+import models.dtomodels.KweetDTO;
 import models.Kweet;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 

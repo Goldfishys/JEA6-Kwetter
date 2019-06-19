@@ -2,9 +2,10 @@ package Websockets;
 
 import Controllers.KweetController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.DTOmodels.KweetDTO;
+import models.dtomodels.KweetDTO;
 import models.Kweet;
 import models.User;
+import models.dtomodels.UserDTO;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -69,12 +70,12 @@ public class KweetWebsocket {
         }
     }
 
-    public void broadcastPostedKweet(KweetDTO kweet, List<User> followers) {
+    public void broadcastPostedKweet(KweetDTO kweet, List<UserDTO> followers) {
         //send kweet to the author
         sendMessage(getSession(kweet.getAuthorID()), kweet);
 
         //send kweet to his followers that are logged in
-        for (User user : followers) {
+        for (UserDTO user : followers) {
             Session session = getSession(user.getId());
             System.out.println("SessionString: " + session);
             if (session != null) {

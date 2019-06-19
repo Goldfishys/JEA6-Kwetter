@@ -2,6 +2,7 @@ package Services;
 
 import DAL.Interfaces.IProfile;
 import models.Profile;
+import models.dtomodels.ProfileDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -18,7 +19,7 @@ public class ProfileServices {
     //endregion
 
     //region methods
-    public Profile GetProfile(int userid) {
+    public ProfileDTO GetProfile(int userid) {
         return profileRepo.GetProfile(userid);
     }
 

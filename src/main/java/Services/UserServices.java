@@ -3,10 +3,12 @@ package Services;
 import DAL.Interfaces.IUser;
 import models.Account;
 import models.User;
+import models.dtomodels.UserDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 
 @RequestScoped
 public class UserServices {
@@ -25,14 +27,12 @@ public class UserServices {
         return null;
     }
 
-    public ArrayList<User> GetFollowers(int userID) {
-        User user = userRepo.GetUser(userID);
-        return userRepo.GetFollowers(user.getFollowers());
+    public List<UserDTO> GetFollowers(int userID) {
+        return userRepo.GetFollowers(userID);
     }
 
-    public ArrayList<User> GetFollowing(int id) {
-        User user = userRepo.GetUser(id);
-        return userRepo.GetFollowing(user.getFollowing());
+    public List<UserDTO> GetFollowing(int id) {
+        return userRepo.GetFollowing(id);
     }
 
     public void FollowUser(int idToFollow, int idFollower) {

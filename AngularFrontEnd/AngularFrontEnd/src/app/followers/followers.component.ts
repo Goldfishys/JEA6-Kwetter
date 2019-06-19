@@ -9,25 +9,19 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class FollowersComponent implements OnInit {
 
-  public userid:number;
+  @Input() userid:number;
   public followers:any = [];
 
-  constructor(public rest:RestService, private route: ActivatedRoute) {
-    route.queryParams.subscribe(params => {
-      this.userid = params.userid;
-    })
-    this.getFollowers();
+  constructor(public rest:RestService) {
+
   }
 
   ngOnInit() {
-
+    this.getFollowers();
   }
 
   public getFollowers(){
     this.rest.getFollowers(this.userid).subscribe((data:{})=>{
-      console.log("getting followers 2k");
-      console.log(data);
-      console.log(data[0].username)
       this.followers = data;
     });
   }

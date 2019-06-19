@@ -1,8 +1,7 @@
 package ManagedBeans;
 
 import Controllers.KweetController;
-import models.DTOmodels.KweetDTO;
-import models.Kweet;
+import models.dtomodels.KweetDTO;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;

@@ -4,6 +4,7 @@ import DAL.Database;
 import DAL.Interfaces.IUser;
 import models.Account;
 import models.User;
+import models.dtomodels.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +38,12 @@ public class UserRepoMock implements IUser {
     }
 
     @Override
-    public ArrayList<User> GetFollowers(List<Account> followers) {
+    public List<UserDTO> GetFollowers(int id) {
         return null;
     }
 
     @Override
-    public ArrayList<User> GetFollowing(List<Account> followers) {
+    public List<UserDTO> GetFollowing(int id)    {
         return null;
     }
 

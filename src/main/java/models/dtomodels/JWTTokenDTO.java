@@ -1,4 +1,4 @@
-package models.DTOmodels;
+package models.dtomodels;
 
 public class JWTTokenDTO {
     private final String token;

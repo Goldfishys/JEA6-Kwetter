@@ -2,10 +2,12 @@ package Controllers;
 
 import Services.UserServices;
 import models.User;
+import models.dtomodels.UserDTO;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 
 @Stateless
 public class UserController {
@@ -21,11 +23,11 @@ public class UserController {
         return us.UpdateUsername(userID, username);
     }
 
-    public ArrayList<User> GetFollowers(int userID) {
+    public List<UserDTO> GetFollowers(int userID) {
         return us.GetFollowers(userID);
     }
 
-    public ArrayList<User> GetFollowing(int id) {
+    public List<UserDTO> GetFollowing(int id) {
         return us.GetFollowing(id);
     }
 

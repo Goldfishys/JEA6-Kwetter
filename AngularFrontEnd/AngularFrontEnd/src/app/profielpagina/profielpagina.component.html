@@ -15,7 +15,8 @@
         <p class="username-p">Username: {{profiledetails.username}}</p>
       </div>
       <div class="recent-tweets-div">
-        <router-outlet></router-outlet>
+        <app-recentkweets *ngIf="toggle" [userid]="this.userid"></app-recentkweets>
+        <app-followers *ngIf="!toggle" [userid]="this.userid"></app-followers>
       </div>
     </div>
     <div class="right-div">
@@ -31,8 +32,8 @@
         </p>
       </div>
       <div class="btn-div">
-        <a [routerLink]="['followers']" [queryParams]="{userid:this.userid}" >followers</a> <br/>
-        <a [routerLink]="['/']" [queryParams]="{userid:this.userid}">Kweets</a>
+        <a (click)="this.showFollowers()" class="nav-content-btn">Followers</a> <br/>
+        <a (click)="this.showKeets()" class="nav-content-btn">Kweets</a>
       </div>
       <div class="followers-output-div">
         <h2>Following</h2>

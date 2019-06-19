@@ -1,11 +1,13 @@
 package RestResources;
 
 import Controllers.UserController;
+import models.dtomodels.UserDTO;
 import models.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/user")
 public class UserResource {
@@ -23,7 +25,7 @@ public class UserResource {
     @GET
     @Path("/{userID}/followers")
     @Produces("application/json")
-    public ArrayList<User> GetFollowers(@PathParam("userID") int userID){
+    public List<UserDTO> GetFollowers(@PathParam("userID") int userID){
         return uc.GetFollowers(userID);
     }
 
@@ -31,7 +33,7 @@ public class UserResource {
     @GET
     @Path("/{userID}/following")
     @Produces("application/json")
-    public ArrayList<User> GetFollowing(@PathParam("userID") int userID){
+    public List<UserDTO> GetFollowing(@PathParam("userID") int userID){
         return uc.GetFollowing(userID);
     }
 
