@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="JEA6-Kwetter" />
+        <module name="javaee8-essentials-archetype" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="javaee8-essentials-archetype" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

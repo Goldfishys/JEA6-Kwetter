@@ -3,6 +3,7 @@ package DAL.Implementations.Database;
 import DAL.Interfaces.IRole;
 import models.Account;
 import models.Role;
+import models.dtomodels.AccountDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
@@ -37,9 +38,10 @@ public class RoleRepo implements IRole {
     }
 
     @Override
-    public Account updateRoles(int accountID, Role role) {
+    public List<Role> updateRoles(int accountID, Role role) {
         Account acc = em.find(Account.class, accountID);
         acc.AssignNewRole(role);
-        return acc;
+        em.merge(acc);
+        return acc.getRoles();
     }
 }

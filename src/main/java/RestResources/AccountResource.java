@@ -2,6 +2,7 @@ package RestResources;
 
 import Controllers.AccountController;
 import models.Account;
+import models.dtomodels.AccountDTO;
 import models.dtomodels.JWTTokenDTO;
 
 import javax.inject.Inject;
@@ -25,7 +26,7 @@ public class AccountResource {
     @GET
     @Path("/accounts")
     @Produces("application/json")
-    public List<Account> GetAccounts(){
+    public List<AccountDTO> GetAccounts(){
         return ac.GetAccounts();
     }
 

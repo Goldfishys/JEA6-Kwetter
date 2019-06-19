@@ -2,15 +2,12 @@ package DAL.Implementations.Database;
 
 import DAL.Interfaces.IAccount;
 import models.Account;
+import models.dtomodels.AccountDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Default
@@ -35,8 +32,8 @@ public class AccountRepo implements IAccount, Serializable {
     }
 
     @Override
-    public List<Account> GetAccounts() {
-        return em.createQuery("select a from Account a", Account.class)
+    public List<AccountDTO> GetAccounts() {
+        return em.createQuery("select new models.dtomodels.AccountDTO(a.ID, u.username, a.roles) from Account a join User u on a.user=u.id", AccountDTO.class)
                 .getResultList();
     }
 

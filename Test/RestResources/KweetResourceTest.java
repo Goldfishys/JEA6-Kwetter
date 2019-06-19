@@ -1,10 +1,13 @@
 package RestResources;
 
+import Controllers.AccountController;
 import Controllers.KweetController;
+import Controllers.RoleController;
+import Controllers.UserController;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import models.*;
 import models.dtomodels.KweetDTO;
-import models.Kweet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -31,14 +34,14 @@ public class KweetResourceTest {
 
     @Deployment
     public static WebArchive createDeployment() {
-        File[] files= Maven.resolver().loadPomFromFile("pom.xml")
+        File[] files = Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies()
                 .resolve()
                 .withTransitivity()
                 .asFile();
 
+
         WebArchive war = ShrinkWrap.create(WebArchive.class)
-                .addAsLibraries(files)
                 .addAsDirectory("src/main/java")
                 .addPackages(true, "DAL")
                 .addPackages(true, "models")
@@ -46,9 +49,10 @@ public class KweetResourceTest {
                 .addPackages(true, "RestResources")
                 .addPackages(true, "Services")
                 .addPackages(true, "com.airhacks")
-                .addPackages(true,"Websockets")
+                .addPackages(true, "Websockets")
                 .addAsResource("META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsLibraries(files);
 
         // Show the deploy structure
         System.out.println(war.toString(true));
@@ -66,7 +70,54 @@ public class KweetResourceTest {
     @Inject
     KweetController kc;
 
+    @Inject
+    AccountController accountController;
+
+    @Inject
+    RoleController roleController;
+
+    @Inject
+    UserController userController;
+
     static int kweetID;
+
+    @Test
+    public void GenerateTestData() {
+
+        int amountOfUsers = 20;
+        //maak useres aan
+        for (int i = 1; i <= amountOfUsers; i++) {
+            //register new account
+            Role userRole = roleController.getAllRoles().get(0);
+            String username = "User" + i;
+            Account acc = new Account(username, username);
+            acc.setUser(new User(username, acc));
+            acc.getUser().setProfile(new Profile("https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1"
+                    , "hi im a user", "nijmegen", "https://www.gorillaz.com/"));
+            accountController.registerAccount(acc);
+
+            //assign user role
+            roleController.updateRoles(acc.getID(), userRole);
+
+            //post 10 kweets
+            for (int x = 1; x <= 10; x++) {
+                Kweet kweet = new Kweet("Kweet" + x, i, null, null);
+                kc.PostKweet(kweet);
+            }
+        }
+
+        //follow atleast 10 users
+        for (int i = 1; i <= amountOfUsers; i++) {
+            int index = i;
+            for (int x = 0; x <= 10; x++) {
+                if(index == 0) {
+                    index = amountOfUsers;
+                }
+                userController.FollowUser(index, i);
+                index--;
+            }
+        }
+    }
 
     @Test
     @InSequence(1)
@@ -117,12 +168,12 @@ public class KweetResourceTest {
     @InSequence(3)
     public void GetKweetBlackBox() {
         String location = "kwetter/kweet/" + kweetID;
-        System.out.println("kwtid: " +kweetID);
+        System.out.println("kwtid: " + kweetID);
         Response response = given().contentType(ContentType.JSON).get(basePath + location);
 
         System.out.println("body: " + response.getBody().asString());
         Kweet kweet = response.getBody().as(Kweet.class);
-        Assert.assertEquals(kweetID,(int) response.jsonPath().get("id"));
+        Assert.assertEquals(kweetID, (int) response.jsonPath().get("id"));
     }
 
     @Test
@@ -238,7 +289,7 @@ public class KweetResourceTest {
 
     @Test
     @InSequence(10)
-    public void GetTimeLineWhiteBox(){
+    public void GetTimeLineWhiteBox() {
         SortedSet<KweetDTO> kweets = kc.GetTimeLine(1);
         Assert.assertEquals(20, kweets.size());
     }
@@ -246,7 +297,7 @@ public class KweetResourceTest {
     @Test
     @RunAsClient
     @InSequence(11)
-    public void GetTimeLineBlackBox(){
+    public void GetTimeLineBlackBox() {
         int accid = 1;
         String location = "kwetter/kweet/timeline/" + accid;
         Response response = given().contentType(ContentType.JSON).get(basePath + location);

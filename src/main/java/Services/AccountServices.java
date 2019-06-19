@@ -3,6 +3,7 @@ package Services;
 import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
+import models.dtomodels.AccountDTO;
 import models.dtomodels.JWTTokenDTO;
 
 import javax.enterprise.context.RequestScoped;
@@ -24,17 +25,15 @@ public class AccountServices {
     //end region
 
     //region methods
-    public Account Register(String username, String password) {
-        Account account = new Account(username, password);
-        Database.getInstance().accountRepo.Register(account);
-        return account;
+    public Account Register(Account acc) {
+        return accountRepo.Register(acc);
     }
 
     public Account GetAccount(int accountID) {
         return accountRepo.GetAccountByID(accountID);
     }
 
-    public List<Account> GetAccounts() {
+    public List<AccountDTO> GetAccounts() {
         return accountRepo.GetAccounts();
     }
 

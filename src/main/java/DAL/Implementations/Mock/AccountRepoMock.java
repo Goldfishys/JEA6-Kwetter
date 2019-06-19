@@ -3,6 +3,7 @@ package DAL.Implementations.Mock;
 import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
+import models.dtomodels.AccountDTO;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class AccountRepoMock implements IAccount {
     }
 
     @Override
-    public List<Account> GetAccounts() {
+    public List<AccountDTO> GetAccounts() {
         throw new NotImplementedException();
     }
 

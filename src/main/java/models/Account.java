@@ -22,7 +22,7 @@ public class Account {
     private String password;
 
     @JsonBackReference
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private User user;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -91,9 +91,9 @@ public class Account {
 
     public void AssignNewRole(Role role) {
         if (role != null) {
-            System.out.println("Assigned new role succesfully");
             this.roles.clear();
             this.roles.add(role);
+            System.out.println("Assigned new role succesfully");
         } else {
             System.out.println("Couldn't find the role");
         }

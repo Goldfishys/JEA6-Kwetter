@@ -4,7 +4,9 @@ import Controllers.AccountController;
 import Controllers.RoleController;
 import models.Account;
 import models.Role;
+import models.dtomodels.AccountDTO;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,14 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class UserBean implements Serializable {
 
     //region properties
     AccountController ac;
     RoleController rc;
     private ArrayList<Role> roles;
-    private List<Account> accounts;
+    private List<AccountDTO> accounts;
     private String newRole;
     //endregion
 
@@ -42,11 +44,11 @@ public class UserBean implements Serializable {
         this.newRole = newRole;
     }
 
-    public List<Account> getAccounts() {
+    public List<AccountDTO> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<Account> accounts) {
+    public void setAccounts(List<AccountDTO> accounts) {
         this.accounts = accounts;
     }
     //endregion
@@ -71,8 +73,8 @@ public class UserBean implements Serializable {
     public void RetrieveAccounts(){
         System.out.println("getting accounts");
         this.setAccounts(ac.GetAccounts());
-        for(Account acc : accounts){
-            System.out.println("Account id: " + acc.getID());
+        for(AccountDTO acc : accounts){
+            System.out.println("Account id: " + acc.getId());
         }
     }
 
@@ -82,16 +84,15 @@ public class UserBean implements Serializable {
             System.out.println("Roles: " + role.getRole() + " - vs: " + newRole);
             if (role.getRole().equals(newRole)) {
                 System.out.println("found role");
-                Account acc = rc.updateRoles(accountID, role);
-                UpdateAccount(acc);
+                List<Role> newRoles = rc.updateRoles(accountID, role);
+                UpdateAccount(newRoles.get(0), accountID);
             }
         }
     }
-
-    public void UpdateAccount(Account account){
-        for(Account acc : this.getAccounts()){
-            if(acc.getID() == account.getID()){
-                accounts.set(accounts.indexOf(acc), account);
+    public void UpdateAccount(Role newRole, int id){
+        for(AccountDTO acc : this.getAccounts()){
+            if(acc.getId() == id){
+                acc.setRoles(newRole);
             }
         }
     }

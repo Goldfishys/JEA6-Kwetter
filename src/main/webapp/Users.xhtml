@@ -22,7 +22,7 @@
             <ui:repeat value="#{userBean.accounts}" var="account">
                 <div class="user">
                     <div class="user-row-item">
-                        <p>#{account.user.username}</p>
+                        <p>#{account.username}</p>
                     </div>
                     <div class="user-row-item">
                         <ui:repeat value="#{account.roles}" var="role">
@@ -35,7 +35,7 @@
                                 <f:selectItems class="user-row-item" value="#{userBean.roles}" var="role"
                                                itemLabel="#{role.role}" itemValue="#{role.role}" />
                             </h:selectOneRadio>
-                            <h:commandButton class="user-row-item" value="Assign Role" type="submit" action="#{userBean.EditRoles(account.ID)}" />
+                            <h:commandButton class="user-row-item" value="Assign Role" type="submit" action="#{userBean.EditRoles(account.id)}" />
                         </h:form>
                     </div>
                 </div>

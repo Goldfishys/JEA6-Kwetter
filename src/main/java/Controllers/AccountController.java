@@ -2,6 +2,7 @@ package Controllers;
 
 import Services.AccountServices;
 import models.Account;
+import models.dtomodels.AccountDTO;
 import models.dtomodels.JWTTokenDTO;
 
 import javax.ejb.Stateless;
@@ -18,11 +19,15 @@ public class AccountController {
         return as.GetAccount(accountID);
     }
 
-    public List<Account> GetAccounts() {
+    public List<AccountDTO> GetAccounts() {
         return as.GetAccounts();
     }
 
     public JWTTokenDTO login(String username, String password) {
         return as.login(username, password);
+    }
+
+    public void registerAccount(Account acc) {
+        as.Register(acc);
     }
 }

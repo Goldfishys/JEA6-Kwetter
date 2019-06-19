@@ -1,5 +1,6 @@
 package ManagedBeans;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class LoginBean implements Serializable {
 
     //region properties

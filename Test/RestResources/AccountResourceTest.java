@@ -1,6 +1,5 @@
 package RestResources;
 
-import Services.JWTService;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
 import models.Account;
@@ -10,8 +9,11 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.strategy.TransitiveStrategy;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +29,14 @@ public class AccountResourceTest {
 
     @Deployment
     public static WebArchive createDeployment() {
+        Maven.configureResolver()
+                .withClassPathResolution(true)
+                .withMavenCentralRepo(true)
+                .fromFile("/path/to/settings.xml")
+                .resolve("org.knowm.xchart:xchart:jar:3.5.2")
+                .using(TransitiveStrategy.INSTANCE)
+                .asList(File.class);
+
         File[] files= Maven.resolver().loadPomFromFile("pom.xml")
                 .importRuntimeDependencies()
                 .resolve()
@@ -87,7 +97,7 @@ public class AccountResourceTest {
 
         Account[] accounts = response.getBody().as(Account[].class);
         for (Account acc : accounts) {
-            Assert.assertTrue(acc.getUser() == null);
+            Assert.assertNull(acc.getUser());
             System.out.println(acc.toString());
         }
     }
