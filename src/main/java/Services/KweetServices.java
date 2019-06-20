@@ -35,6 +35,12 @@ public class KweetServices {
 
     //region methods
     public List<KweetDTO> SearchKweets(String searchTerm, boolean mentions) {
+//        for(int x = 1; x <= 10; x ++){
+//            for(int i = 1; i <= 10; i++){
+//                kweetRepo.PostKweet(new Kweet("Hey, kweet"+i,x));
+//            }
+//        }
+
         if (!searchTerm.equals("")) {
             return (mentions) ? kweetRepo.SearchMentions(searchTerm) : kweetRepo.SearchKweets(searchTerm);
         }

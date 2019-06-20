@@ -3,7 +3,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
 
 <head>
     <title>Admin Console</title>
@@ -26,7 +28,9 @@
                 <div class="kweet">
                     <p>#{kweet.text}</p>
                     <h:form>
-                        <h:commandButton value="Delete" action="#{kweetBean.DeleteKweet(kweet.ID)}"/>
+                        <h:commandButton value="Delete" action="#{kweetBean.DeleteKweet()}" actionListener="#{kweetBean.attrListener}">
+                            <f:attribute name="kweetID" value="#{kweet.ID}" />
+                        </h:commandButton>
                     </h:form>
                 </div>
             </ui:repeat>

@@ -146,4 +146,41 @@ a:hover {
 .user-row-item{
     position:relative;
     float: left;
+    height: 100%;
+    width: 15%;
+}
+
+.user-row-item2{
+    position:relative;
+    float: left;
+    height: 100%;
+    width: 68%;
+}
+
+tbody{
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+tr{
+    position: relative;
+    float: left;
+    height: 100%;
+    width: 15%;
+    padding-right: 200px;
+}
+
+td{
+    position: relative;
+    min-height: 50px;
+    min-width: 200px;
+    height: 50px;
+    width: 200px;
+}
+
+table{
+    position: relative;
+    height: 100%;
+    width: 100%;
 }

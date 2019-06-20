@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class LoginBean implements Serializable {
 
     //region properties

@@ -2,11 +2,10 @@ package ManagedBeans;
 
 import Controllers.AccountController;
 import Controllers.RoleController;
-import models.Account;
 import models.Role;
 import models.dtomodels.AccountDTO;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class UserBean implements Serializable {
 
     //region properties
@@ -23,7 +22,10 @@ public class UserBean implements Serializable {
     RoleController rc;
     private ArrayList<Role> roles;
     private List<AccountDTO> accounts;
+//    @ManagedProperty(value="#{param.role}")
     private String newRole;
+//    @ManagedProperty(value="#{param.accountID}")
+    private int accountID;
     //endregion
 
 
@@ -82,14 +84,20 @@ public class UserBean implements Serializable {
         }
     }
 
-    public void EditRoles(int accountID) {
-        System.out.println("Editing: " + newRole);
+    public void attrListener(ActionEvent event){
+        this.accountID = (Integer) event.getComponent().getAttributes().get("accoundID");
+        this.newRole = (String) event.getComponent().getAttributes().get("role");
+    }
+
+    public void EditRoles() {
+        System.out.println("accid: " + this.accountID);
+        System.out.println("Editing: " + this.newRole);
         for (Role role : roles) {
-            System.out.println("Roles: " + role.getRole() + " - vs: " + newRole);
-            if (role.getRole().equals(newRole)) {
+            System.out.println("Roles: " + role.getRole() + " - vs: " + this.newRole);
+            if (role.getRole().equals(this.newRole)) {
                 System.out.println("found role");
-                List<Role> newRoles = rc.updateRoles(accountID, role);
-                UpdateAccount(newRoles, accountID);
+                List<Role> newRoles = rc.updateRoles(this.accountID, role);
+                UpdateAccount(newRoles, this.accountID);
             }
         }
     }

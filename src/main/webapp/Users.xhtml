@@ -29,14 +29,17 @@
                             <p class="user-row-item">#{role.role}</p>
                         </ui:repeat>
                     </div>
-                    <div class="user-row-item">
-                        <h:form class="user-row-item">
-                            <h:selectOneRadio class="user-row-item" value="#{userBean.newRole}">
-                                <f:selectItems class="user-row-item" value="#{userBean.roles}" var="role"
-                                               itemLabel="#{role.role}" itemValue="#{role.role}" />
-                            </h:selectOneRadio>
-                            <h:commandButton class="user-row-item" value="Assign Role" type="submit" action="#{userBean.EditRoles(account.id)}" />
-                        </h:form>
+                    <div class="user-row-item2">
+                        <h:dataTable value="#{userBean.roles}" var="role">
+                            <h:column>
+                                <h:form>
+                                    <h:commandButton value="Change role to #{role.role}" action="#{userBean.EditRoles()}"  actionListener="#{userBean.attrListener}">
+                                        <f:attribute name="accoundID" value="#{account.id}" />
+                                        <f:attribute name="role" value="#{role.role}" />
+                                    </h:commandButton>
+                                </h:form>
+                            </h:column>
+                        </h:dataTable>
                     </div>
                 </div>
             </ui:repeat>
