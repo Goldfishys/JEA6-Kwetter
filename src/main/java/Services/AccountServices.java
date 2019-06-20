@@ -3,6 +3,7 @@ package Services;
 import DAL.Database;
 import DAL.Interfaces.IAccount;
 import models.Account;
+import models.Role;
 import models.dtomodels.AccountDTO;
 import models.dtomodels.JWTTokenDTO;
 
@@ -19,6 +20,12 @@ public class AccountServices {
     @Inject
     JWTService jwtService;
 
+    @Inject
+    private UserServices us;
+
+    @Inject
+    private RoleServices rs;
+
     //region constructor
     public AccountServices() {
     }
@@ -34,7 +41,14 @@ public class AccountServices {
     }
 
     public List<AccountDTO> GetAccounts() {
-        return accountRepo.GetAccounts();
+        List<AccountDTO> accs = accountRepo.GetAccounts();
+        for(AccountDTO acc : accs){
+            List<Role> roles = rs.getRolesForUser(acc.getId());
+            roles.forEach(p -> System.out.println("@Role" + p.toString()));
+            acc.setRoles(roles);
+        }
+        accs.forEach(p -> accs.toString());
+        return accs;
     }
 
     public JWTTokenDTO login(String username, String password) {

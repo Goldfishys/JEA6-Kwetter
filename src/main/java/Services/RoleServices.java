@@ -26,4 +26,8 @@ public class RoleServices {
     public List<Role> updateRoles(int accountID, Role role) {
         return roleRepo.updateRoles(accountID, role);
     }
+
+    public List<Role> getRolesForUser(int accountID) {
+        return roleRepo.getRolesForUser(accountID);
+    }
 }

@@ -1,5 +1,7 @@
 package models;
 
+import com.sun.mail.imap.protocol.ID;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDrole")
     private int IDrole;
+
     private String role;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -49,21 +52,22 @@ public class Role {
     public Role() {
     }
 
+    public Role(int IDrole, String role, List<Permission> permissions) {
+        this.IDrole = IDrole;
+        this.role = role;
+        this.permissions = permissions;
+    }
+
+    @Override
+    public String toString(){
+        return "ID: " + this.getIDrole() + " - Name: " + this.role;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (o == null) {
-            return false;
+        if(o instanceof Role) {
+            return ((Role) o).getRole().equals(this.getRole());
         }
-
-        if (!(o.getClass() == Role.class)) {
-            return false;
-        }
-
-        Role r = (Role) o;
-        if(r.getRole() == this.getRole()){
-            return true;
-        }
-
         return false;
     }
 

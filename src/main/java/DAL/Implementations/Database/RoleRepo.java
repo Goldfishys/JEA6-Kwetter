@@ -3,7 +3,6 @@ package DAL.Implementations.Database;
 import DAL.Interfaces.IRole;
 import models.Account;
 import models.Role;
-import models.dtomodels.AccountDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
@@ -43,5 +42,18 @@ public class RoleRepo implements IRole {
         acc.AssignNewRole(role);
         em.merge(acc);
         return acc.getRoles();
+    }
+
+    @Override
+    public List<Role> getRolesForUser(int accountID) {
+        String sql = "SELECT r.* FROM Role r join Account_Role ar on r.IDrole=ar.IDrole where ar.IDaccount=:accountID";
+        List<Role> roles = em.createNativeQuery(sql, Role.class)
+                .setParameter("accountID", accountID)
+                .getResultList();
+        for(Object r : roles){
+            System.out.println(r == null);
+            System.out.println("RoleFoundIs:" + r.toString());
+        }
+        return roles;
     }
 }

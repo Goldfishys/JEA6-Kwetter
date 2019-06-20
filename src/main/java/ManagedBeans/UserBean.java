@@ -75,6 +75,10 @@ public class UserBean implements Serializable {
         this.setAccounts(ac.GetAccounts());
         for(AccountDTO acc : accounts){
             System.out.println("Account id: " + acc.getId());
+            System.out.println("Roles size: "+acc.getRoles().size());
+            for(Role r : acc.getRoles()){
+                System.out.println(r.toString());
+            }
         }
     }
 
@@ -85,14 +89,15 @@ public class UserBean implements Serializable {
             if (role.getRole().equals(newRole)) {
                 System.out.println("found role");
                 List<Role> newRoles = rc.updateRoles(accountID, role);
-                UpdateAccount(newRoles.get(0), accountID);
+                UpdateAccount(newRoles, accountID);
             }
         }
     }
-    public void UpdateAccount(Role newRole, int id){
+
+    public void UpdateAccount(List<Role> newRoles, int id){
         for(AccountDTO acc : this.getAccounts()){
             if(acc.getId() == id){
-                acc.setRoles(newRole);
+                acc.setRoles(newRoles);
             }
         }
     }

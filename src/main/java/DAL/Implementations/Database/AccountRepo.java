@@ -7,6 +7,7 @@ import models.dtomodels.AccountDTO;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.persistence.*;
+import javax.persistence.EntityTransaction;
 import java.io.Serializable;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class AccountRepo implements IAccount, Serializable {
 
     @Override
     public List<AccountDTO> GetAccounts() {
-        return em.createQuery("select new models.dtomodels.AccountDTO(a.ID, u.username, a.roles) from Account a join User u on a.user=u.id", AccountDTO.class)
+        return em.createQuery("select new models.dtomodels.AccountDTO(a.ID, u.username) from Account a join User u on a.user=u.account", AccountDTO.class)
                 .getResultList();
     }
 
